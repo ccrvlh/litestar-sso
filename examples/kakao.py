@@ -1,5 +1,4 @@
-"""Kakao Login Example
-"""
+"""Kakao Login Example"""
 
 import os
 import uvicorn

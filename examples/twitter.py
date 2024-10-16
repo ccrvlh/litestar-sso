@@ -1,5 +1,4 @@
-"""Twitter (X) Login Example
-"""
+"""Twitter (X) Login Example"""
 
 import os
 import uvicorn

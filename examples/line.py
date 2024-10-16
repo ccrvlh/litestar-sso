@@ -1,5 +1,4 @@
-"""Line Login Example
-"""
+"""Line Login Example"""
 
 import os
 import uvicorn

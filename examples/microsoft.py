@@ -1,5 +1,4 @@
-"""Microsoft Login Example
-"""
+"""Microsoft Login Example"""
 
 import os
 import uvicorn

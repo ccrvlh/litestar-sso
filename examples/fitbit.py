@@ -1,5 +1,4 @@
-"""Fitbit Login Example
-"""
+"""Fitbit Login Example"""
 
 import os
 import uvicorn

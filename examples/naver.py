@@ -1,5 +1,4 @@
-"""Naver Login Example
-"""
+"""Naver Login Example"""
 
 import os
 import uvicorn

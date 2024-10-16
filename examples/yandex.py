@@ -1,5 +1,4 @@
-"""Yandex Login Example
-"""
+"""Yandex Login Example"""
 
 import os
 import uvicorn
