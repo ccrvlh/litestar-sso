@@ -7,14 +7,14 @@ if TYPE_CHECKING:
     import mkdocs.config.defaults  # pragma: no cover
 
 
-SKIPPED_MODULES = ("fastapi_sso.sso", "fastapi_sso")
+SKIPPED_MODULES = ("litestar_sso.sso", "litestar_sso")
 
 
 def generate_reference_pages(docs_dir: str, nav: list):
     """Generate reference pages for the documentation."""
     reference_path = Path(docs_dir, "reference")
     reference_path.mkdir(exist_ok=True)
-    source_path = Path("./fastapi_sso")
+    source_path = Path("./litestar_sso")
     reference_nav = []
     for path in sorted(source_path.rglob("*.py")):
         module_path = path.relative_to(".").with_suffix("")
@@ -26,7 +26,7 @@ def generate_reference_pages(docs_dir: str, nav: list):
 
         if parts[-1] == "__init__":
             if len(parts) == 1:
-                parts = ["fastapi_sso"]
+                parts = ["litestar_sso"]
             else:
                 parts = parts[:-1]
         elif parts[-1] == "__main__":

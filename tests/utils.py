@@ -1,4 +1,4 @@
-from starlette.datastructures import URL
+from litestar.datastructures import URL
 
 
 class Request:

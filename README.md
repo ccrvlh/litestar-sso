@@ -1,15 +1,15 @@
 # FastAPI SSO
 
-![Supported Python Versions](https://img.shields.io/pypi/pyversions/fastapi-sso)
-[![Test coverage](https://codecov.io/gh/tomasvotava/fastapi-sso/graph/badge.svg?token=SIFCTVSSOS)](https://codecov.io/gh/tomasvotava/fastapi-sso)
-![Tests Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/fastapi-sso/test.yml?label=tests)
-![Lint Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/fastapi-sso/lint.yml?label=ruff)
-![Mypy Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/fastapi-sso/lint.yml?label=mypy)
-![Black Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/fastapi-sso/lint.yml?label=black)
-![CodeQL Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/fastapi-sso/codeql-analysis.yml?label=CodeQL)
-![PyPi weekly downloads](https://img.shields.io/pypi/dw/fastapi-sso)
-![Project License](https://img.shields.io/github/license/tomasvotava/fastapi-sso)
-![PyPi Version](https://img.shields.io/pypi/v/fastapi-sso)
+![Supported Python Versions](https://img.shields.io/pypi/pyversions/litestar-sso)
+[![Test coverage](https://codecov.io/gh/tomasvotava/litestar-sso/graph/badge.svg?token=SIFCTVSSOS)](https://codecov.io/gh/tomasvotava/litestar-sso)
+![Tests Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/test.yml?label=tests)
+![Lint Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/lint.yml?label=ruff)
+![Mypy Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/lint.yml?label=mypy)
+![Black Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/lint.yml?label=black)
+![CodeQL Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/codeql-analysis.yml?label=CodeQL)
+![PyPi weekly downloads](https://img.shields.io/pypi/dw/litestar-sso)
+![Project License](https://img.shields.io/github/license/tomasvotava/litestar-sso)
+![PyPi Version](https://img.shields.io/pypi/v/litestar-sso)
 
 FastAPI plugin to enable SSO to most common providers (such as Facebook login, Google login and login via
 Microsoft Office 365 account).
@@ -17,9 +17,9 @@ Microsoft Office 365 account).
 This allows you to implement the famous `Login with Google/Facebook/Microsoft` buttons functionality on your
 backend very easily.
 
-**Documentation**: [https://tomasvotava.github.io/fastapi-sso/](https://tomasvotava.github.io/fastapi-sso/)
+**Documentation**: [https://tomasvotava.github.io/litestar-sso/](https://tomasvotava.github.io/litestar-sso/)
 
-**Source Code**: [https://github.com/tomasvotava/fastapi-sso](https://github.com/tomasvotava/fastapi-sso/)
+**Source Code**: [https://github.com/tomasvotava/litestar-sso](https://github.com/tomasvotava/litestar-sso/)
 
 ## Demo site
 
@@ -29,11 +29,11 @@ Medium articles about FastAPI and FastAPI SSO.
 
 Be sure to see his tutorials, follow him and show him some appreciation!
 
-Please see his [announcement](https://github.com/tomasvotava/fastapi-sso/discussions/150) with all the links.
+Please see his [announcement](https://github.com/tomasvotava/litestar-sso/discussions/150) with all the links.
 
 Quick links for the eager ones:
 
-- [Demo site](https://fastapi-sso-example.vercel.app/)
+- [Demo site](https://litestar-sso-example.vercel.app/)
 - [Medium articles](https://medium.com/@christos.karvouniaris247)
 
 ## Security warning
@@ -64,7 +64,7 @@ I tend to process Pull Requests faster when properly caffeinated 😉.
 - Spotify
 - Fitbit
 - Github (credits to [Brandl](https://github.com/Brandl) for hint using `accept` header)
-- generic (see [docs](https://tomasvotava.github.io/fastapi-sso/reference/sso.generic/))
+- generic (see [docs](https://tomasvotava.github.io/litestar-sso/reference/sso.generic/))
 - Notion
 - Twitter (X)
 
@@ -85,16 +85,16 @@ See [Contributing](#contributing) for a guide on how to contribute your own logi
 ### Install using `pip`
 
 ```console
-pip install fastapi-sso
+pip install litestar-sso
 ```
 
 ### Install using `poetry`
 
 ```console
-poetry add fastapi-sso
+poetry add litestar-sso
 ```
 
 ## Contributing
 
 If you'd like to contribute and add your specific login provider, please see
-[Contributing](https://tomasvotava.github.io/fastapi-sso/contributing) file.
+[Contributing](https://tomasvotava.github.io/litestar-sso/contributing) file.

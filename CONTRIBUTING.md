@@ -9,9 +9,9 @@ Seeing the file `poetry.lock` you may have guessed this project relies on [Poetr
 to manage dependencies.
 
 If there is a need for a 3rd party dependency in order to integrate login provider, please try to make
-use of [extras](https://python-poetry.org/docs/pyproject/#extras) in order not to make `fastapi-sso`
+use of [extras](https://python-poetry.org/docs/pyproject/#extras) in order not to make `litestar-sso`
 any heavier. Any dependency apart from the ones listed in `tool.poetry.dependencies` in
-[`pyproject.toml`](https://github.com/tomasvotava/fastapi-sso/tree/master/pyproject.toml)
+[`pyproject.toml`](https://github.com/tomasvotava/litestar-sso/tree/master/pyproject.toml)
 should be an extra along with it being optional. If you are not shure how to do this, let me know
 the dependency in PR and I will add it before merging your code.
 
@@ -20,7 +20,7 @@ Also, **please strictly separate runtime dependencies from dev dependencies**.
 ## Provide examples
 
 Please, try to provide examples for the login provider in the
-[`examples/`](https://github.com/tomasvotava/fastapi-sso/tree/master/examples) directory.
+[`examples/`](https://github.com/tomasvotava/litestar-sso/tree/master/examples) directory.
 **Always make sure your code contains no credentials before submitting the PR**.
 
 ## Code quality
@@ -52,7 +52,7 @@ Check your code by calling:
 ```console
 $ poe ruff
 
-Poe => ruff check fastapi_sso
+Poe => ruff check litestar_sso
 All checks passed!
 ```
 

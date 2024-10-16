@@ -16,11 +16,11 @@ And make sure you pass `allow_insecure_http = True` to SSO class' constructor, s
 
 ```python
 import os
-from fastapi_sso.sso.google import GoogleSSO
+from litestar_sso.sso.google import GoogleSSO
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 google_sso = GoogleSSO("client-id", "client-secret", allow_insecure_http=True)
 ```
 
-See [this issue](https://github.com/tomasvotava/fastapi-sso/issues/2) for more information.
+See [this issue](https://github.com/tomasvotava/litestar-sso/issues/2) for more information.

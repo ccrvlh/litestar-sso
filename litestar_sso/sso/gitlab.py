@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 
 import pydantic
 
-from fastapi_sso.sso.base import DiscoveryDocument, OpenID, SSOBase
+from litestar_sso.sso.base import DiscoveryDocument, OpenID, SSOBase
 
 if TYPE_CHECKING:
     import httpx  # pragma: no cover

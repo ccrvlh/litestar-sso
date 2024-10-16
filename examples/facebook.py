@@ -3,14 +3,16 @@
 import os
 
 import uvicorn
-from fastapi import FastAPI, Request
+from litestar import Litestar
+from litestar import Request
+from litestar import get
 
-from fastapi_sso.sso.facebook import FacebookSSO
+from litestar_sso.sso.facebook import FacebookSSO
 
 CLIENT_ID = os.environ["CLIENT_ID"]
 CLIENT_SECRET = os.environ["CLIENT_SECRET"]
 
-app = FastAPI()
+app = Litestar()
 
 sso = FacebookSSO(
     client_id=CLIENT_ID,
@@ -20,14 +22,14 @@ sso = FacebookSSO(
 )
 
 
-@app.get("/auth/login")
+@get("/auth/login")
 async def auth_init():
     """Initialize auth and redirect"""
     with sso:
         return await sso.get_login_redirect(params={"prompt": "consent", "access_type": "offline"})
 
 
-@app.get("/auth/callback")
+@get("/auth/callback")
 async def auth_callback(request: Request):
     """Verify login"""
     with sso:

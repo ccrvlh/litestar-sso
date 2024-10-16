@@ -1,15 +1,17 @@
-"""This is an example usage of fastapi-sso.
+"""This is an example usage of litestar-sso.
 """
 
+import uvicorn
 from typing import Any, Dict, Union
 from httpx import AsyncClient
-import uvicorn
-from fastapi import FastAPI, HTTPException
-from starlette.requests import Request
-from fastapi_sso.sso.base import DiscoveryDocument, OpenID
-from fastapi_sso.sso.generic import create_provider
+from litestar import Litestar
+from litestar import Request
+from litestar import get
+from litestar.exceptions import HTTPException
+from litestar_sso.sso.base import DiscoveryDocument, OpenID
+from litestar_sso.sso.generic import create_provider
 
-app = FastAPI()
+app = Litestar()
 
 # Try running:
 # docker run \
@@ -43,14 +45,14 @@ sso = GenericSSO(
 )
 
 
-@app.get("/login")
+@get("/login")
 async def sso_login():
     """Generate login url and redirect"""
     with sso:
         return await sso.get_login_redirect()
 
 
-@app.get("/callback")
+@get("/callback")
 async def sso_callback(request: Request):
     """Process login response from OIDC and return user info"""
     with sso:

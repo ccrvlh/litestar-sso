@@ -5,7 +5,7 @@ with close to no code.
 import logging
 from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Type, Union
 
-from fastapi_sso.sso.base import DiscoveryDocument, OpenID, SSOBase
+from litestar_sso.sso.base import DiscoveryDocument, OpenID, SSOBase
 
 if TYPE_CHECKING:
     import httpx  # pragma: no cover
@@ -32,7 +32,7 @@ def create_provider(
 
     Example:
         ```python
-        from fastapi_sso.sso.generic import create_provider
+        from litestar_sso.sso.generic import create_provider
 
         discovery = {
             "authorization_endpoint": "http://localhost:9090/auth",

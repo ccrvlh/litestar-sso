@@ -15,9 +15,9 @@ Then, copy the `Client ID` and `Client secret` and paste them into the following
 ```python
 from fastapi import FastAPI
 from starlette.requests import Request
-from fastapi_sso.sso.google import GoogleSSO
+from litestar_sso.sso.google import GoogleSSO
 
-app = FastAPI()
+app = Litestar()
 
 CLIENT_ID = "your-google-client-id"  # <-- paste your client id here
 CLIENT_SECRET = "your-google-client-secret" # <-- paste your client secret here
@@ -41,8 +41,8 @@ Save the file as `example.py` and run it using `uvicorn example:app`.
 Now, visit [http://localhost:3000/google/login](http://localhost:3000/google/login).
 
 !!! note "Does it work?"
-    You should be redirected to Google login page. After successful login, you should be redirected back to
-    `http://localhost:3000/google/callback` and see a JSON response containing your user data.
+You should be redirected to Google login page. After successful login, you should be redirected back to
+`http://localhost:3000/google/callback` and see a JSON response containing your user data.
 
 ## Using SSO as a dependency
 
@@ -52,9 +52,9 @@ the request is processed. You may even omit the `with` statement in this case.
 
 ```python
 from fastapi import Depends, FastAPI, Request
-from fastapi_sso.sso.google import GoogleSSO
+from litestar_sso.sso.google import GoogleSSO
 
-app = FastAPI()
+app = Litestar()
 
 CLIENT_ID = "your-google-client-id"  # <-- paste your client id here
 CLIENT_SECRET = "your-google-client-secret" # <-- paste your client secret here

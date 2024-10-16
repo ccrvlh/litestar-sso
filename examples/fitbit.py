@@ -3,13 +3,15 @@
 
 import os
 import uvicorn
-from fastapi import FastAPI, Request
-from fastapi_sso.sso.fitbit import FitbitSSO
+from litestar import Litestar
+from litestar import Request
+from litestar import get
+from litestar_sso.sso.fitbit import FitbitSSO
 
 CLIENT_ID = os.environ["CLIENT_ID"]
 CLIENT_SECRET = os.environ["CLIENT_SECRET"]
 
-app = FastAPI()
+app = Litestar()
 
 sso = FitbitSSO(
     client_id=CLIENT_ID,
@@ -19,14 +21,14 @@ sso = FitbitSSO(
 )
 
 
-@app.get("/auth/login")
+@get("/auth/login")
 async def auth_init():
     """Initialize auth and redirect"""
     with sso:
         return await sso.get_login_redirect()
 
 
-@app.get("/auth/callback")
+@get("/auth/callback")
 async def auth_callback(request: Request):
     """Verify login"""
     with sso:

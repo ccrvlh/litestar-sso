@@ -1,5 +1,5 @@
 import pytest
-from fastapi_sso import NotionSSO, OpenID, SSOLoginError
+from litestar_sso import NotionSSO, OpenID, SSOLoginError
 
 
 async def test_notion_openid_response():

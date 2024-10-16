@@ -4,7 +4,7 @@ from typing import ClassVar, Optional
 
 import httpx
 
-from fastapi_sso.sso.base import DiscoveryDocument, OpenID, SSOBase, SSOLoginError
+from litestar_sso.sso.base import DiscoveryDocument, OpenID, SSOBase, SSOLoginError
 
 
 class GoogleSSO(SSOBase):

@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "fastapi-sso"
+name = "litestar-sso"
 version = "0.15.0"
 description = "FastAPI plugin to enable SSO to most common providers (such as Facebook login, Google login and login via Microsoft Office 365 Account)"
 authors = ["Tomas Votava <info@tomasvotava.eu>"]
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/tomasvotava/fastapi-sso"
-homepage = "https://tomasvotava.github.io/fastapi-sso/"
-documentation = "https://tomasvotava.github.io/fastapi-sso/"
+repository = "https://github.com/tomasvotava/litestar-sso"
+homepage = "https://tomasvotava.github.io/litestar-sso/"
+documentation = "https://tomasvotava.github.io/litestar-sso/"
 keywords = [
     "fastapi",
     "sso",
@@ -17,7 +17,7 @@ keywords = [
     "spotify",
     "linkedin",
 ]
-include = ["fastapi_sso/py.typed"]
+include = ["litestar_sso/py.typed"]
 
 
 [tool.pytest.ini_options]
@@ -25,7 +25,7 @@ testpaths = ["tests/"]
 asyncio_mode = "auto"
 addopts = [
     "-v",
-    "--cov=fastapi_sso",
+    "--cov=litestar_sso",
     "--cov-report=xml:coverage.xml",
     "--cov-report=json:coverage.json",
     "--cov-report=term-missing",
@@ -69,19 +69,19 @@ ignore = [
 convention = "google"
 
 [tool.ruff.lint.isort]
-known-first-party = ["fastapi_sso"]
+known-first-party = ["litestar_sso"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests*/**/*.py" = ["S101"] # Allow asserts in tests
 "**/__init__.py" = ["D104"] # Allow missing docstrings in __init__ files
 
 [tool.poe.tasks]
-ruff = "ruff check fastapi_sso"
-black = "black fastapi_sso"
-isort = "isort --settings-path .isort.cfg fastapi_sso"
-mypy = "mypy --config-file mypy.ini fastapi_sso"
-black-check = "black --check fastapi_sso"
-isort-check = "isort --settings-path .isort.cfg --check-only fastapi_sso"
+ruff = "ruff check litestar_sso"
+black = "black litestar_sso"
+isort = "isort --settings-path .isort.cfg litestar_sso"
+mypy = "mypy --config-file mypy.ini litestar_sso"
+black-check = "black --check litestar_sso"
+isort-check = "isort --settings-path .isort.cfg --check-only litestar_sso"
 
 format = ["black", "isort"]
 lint = ["ruff", "mypy", "black-check", "isort-check"]
@@ -110,11 +110,11 @@ uvicorn = ">=0.23.1"
 ruff = ">=0.4.2,<0.7.0"
 
 [tool.poetry.dependencies]
-fastapi = ">=0.80"
 httpx = ">=0.23.0"
 oauthlib = ">=3.1.0"
 pydantic = { extras = ["email"], version = ">=1.8.0" }
 python = ">=3.8,<4.0"
+litestar = "^2.12.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

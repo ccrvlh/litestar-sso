@@ -4,7 +4,7 @@ import os
 import pytest
 from utils import Request
 
-from fastapi_sso.sso.base import SSOBase, SSOLoginError, UnsetStateWarning
+from litestar_sso.sso.base import SSOBase, SSOLoginError, UnsetStateWarning
 
 
 class TestSSOBase:

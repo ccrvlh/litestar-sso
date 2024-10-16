@@ -1,5 +1,5 @@
-from fastapi_sso.sso.base import OpenID
-from fastapi_sso.sso.generic import create_provider
+from litestar_sso.sso.base import OpenID
+from litestar_sso.sso.generic import create_provider
 
 DISCOVERY = {
     "authorization_endpoint": "http://localhost:9090/auth",

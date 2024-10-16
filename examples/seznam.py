@@ -2,15 +2,15 @@
 
 import os
 import uvicorn
-from fastapi import FastAPI
-from fastapi import Request
-
-from fastapi_sso.sso.seznam import SeznamSSO
+from litestar import Litestar
+from litestar import Request
+from litestar import get
+from litestar_sso.sso.seznam import SeznamSSO
 
 CLIENT_ID = os.environ["CLIENT_ID"]
 CLIENT_SECRET = os.environ["CLIENT_SECRET"]
 
-app = FastAPI()
+app = Litestar()
 
 sso = SeznamSSO(
     client_id=CLIENT_ID,
@@ -20,18 +20,20 @@ sso = SeznamSSO(
 )
 
 
-@app.get("/auth/login")
+@get("/auth/login")
 async def auth_init():
     """Initialize auth and redirect"""
     with sso:
         return await sso.get_login_redirect()
 
 
-@app.get("/auth/callback")
+@get("/auth/callback")
 async def auth_callback(request: Request):
     """Verify login"""
     with sso:
-        user = await sso.verify_and_process(request, params={"client_secret": CLIENT_SECRET})  # <- "client_secret" parameter is needed!
+        user = await sso.verify_and_process(
+            request, params={"client_secret": CLIENT_SECRET}
+        )  # <- "client_secret" parameter is needed!
     return user
 
 

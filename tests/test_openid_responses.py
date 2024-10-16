@@ -1,19 +1,19 @@
 import pytest
-from fastapi_sso.sso.base import OpenID, SSOBase
+from litestar_sso.sso.base import OpenID, SSOBase
 from typing import Dict, Type, Tuple, Any
 
-from fastapi_sso.sso.twitter import TwitterSSO
-from fastapi_sso.sso.naver import NaverSSO
-from fastapi_sso.sso.spotify import SpotifySSO
-from fastapi_sso.sso.microsoft import MicrosoftSSO
-from fastapi_sso.sso.linkedin import LinkedInSSO
-from fastapi_sso.sso.line import LineSSO
-from fastapi_sso.sso.kakao import KakaoSSO
-from fastapi_sso.sso.gitlab import GitlabSSO
-from fastapi_sso.sso.github import GithubSSO
-from fastapi_sso.sso.fitbit import FitbitSSO
-from fastapi_sso.sso.facebook import FacebookSSO
-from fastapi_sso.sso.yandex import YandexSSO
+from litestar_sso.sso.twitter import TwitterSSO
+from litestar_sso.sso.naver import NaverSSO
+from litestar_sso.sso.spotify import SpotifySSO
+from litestar_sso.sso.microsoft import MicrosoftSSO
+from litestar_sso.sso.linkedin import LinkedInSSO
+from litestar_sso.sso.line import LineSSO
+from litestar_sso.sso.kakao import KakaoSSO
+from litestar_sso.sso.gitlab import GitlabSSO
+from litestar_sso.sso.github import GithubSSO
+from litestar_sso.sso.fitbit import FitbitSSO
+from litestar_sso.sso.facebook import FacebookSSO
+from litestar_sso.sso.yandex import YandexSSO
 
 sso_test_cases: Tuple[Tuple[Type[SSOBase], Dict[str, Any], OpenID], ...] = (
     (
@@ -30,7 +30,14 @@ sso_test_cases: Tuple[Tuple[Type[SSOBase], Dict[str, Any], OpenID], ...] = (
     ),
     (
         NaverSSO,
-        {"response": {"nickname": "test", "profile_image": "https://myimage", "id": "test", "email": "test@example.com"}},
+        {
+            "response": {
+                "nickname": "test",
+                "profile_image": "https://myimage",
+                "id": "test",
+                "email": "test@example.com",
+            }
+        },
         OpenID(id="test", email="test@example.com", display_name="test", provider="naver", picture="https://myimage"),
     ),
     (

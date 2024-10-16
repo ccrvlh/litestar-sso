@@ -5,26 +5,26 @@ from typing import Type
 from urllib.parse import quote_plus
 
 import pytest
-from fastapi.responses import RedirectResponse
+from litestar.response import Redirect
 from utils import AnythingDict, Request, Response, make_fake_async_client
 
-from fastapi_sso.sso.base import OpenID, SSOBase
-from fastapi_sso.sso.facebook import FacebookSSO
-from fastapi_sso.sso.fitbit import FitbitSSO
-from fastapi_sso.sso.generic import create_provider
-from fastapi_sso.sso.github import GithubSSO
-from fastapi_sso.sso.gitlab import GitlabSSO
-from fastapi_sso.sso.google import GoogleSSO
-from fastapi_sso.sso.kakao import KakaoSSO
-from fastapi_sso.sso.line import LineSSO
-from fastapi_sso.sso.microsoft import MicrosoftSSO
-from fastapi_sso.sso.naver import NaverSSO
-from fastapi_sso.sso.spotify import SpotifySSO
-from fastapi_sso.sso.notion import NotionSSO
-from fastapi_sso.sso.linkedin import LinkedInSSO
-from fastapi_sso.sso.twitter import TwitterSSO
-from fastapi_sso.sso.yandex import YandexSSO
-from fastapi_sso.sso.seznam import SeznamSSO
+from litestar_sso.sso.base import OpenID, SSOBase
+from litestar_sso.sso.facebook import FacebookSSO
+from litestar_sso.sso.fitbit import FitbitSSO
+from litestar_sso.sso.generic import create_provider
+from litestar_sso.sso.github import GithubSSO
+from litestar_sso.sso.gitlab import GitlabSSO
+from litestar_sso.sso.google import GoogleSSO
+from litestar_sso.sso.kakao import KakaoSSO
+from litestar_sso.sso.line import LineSSO
+from litestar_sso.sso.microsoft import MicrosoftSSO
+from litestar_sso.sso.naver import NaverSSO
+from litestar_sso.sso.spotify import SpotifySSO
+from litestar_sso.sso.notion import NotionSSO
+from litestar_sso.sso.linkedin import LinkedInSSO
+from litestar_sso.sso.twitter import TwitterSSO
+from litestar_sso.sso.yandex import YandexSSO
+from litestar_sso.sso.seznam import SeznamSSO
 
 GenericProvider = create_provider(
     name="generic",
@@ -106,7 +106,7 @@ class TestProviders:
             url = await sso.get_login_url(**kwargs)
             redirect = await sso.get_login_redirect(**kwargs)
             assert isinstance(url, str), "Login URL must be a string"
-            assert isinstance(redirect, RedirectResponse), "Login redirect must be a RedirectResponse"
+            assert isinstance(redirect, Redirect), "Login redirect must be a RedirectResponse"
             assert redirect.headers["location"] == url, "Login redirect must have the same URL as login URL"
             return url, redirect
 

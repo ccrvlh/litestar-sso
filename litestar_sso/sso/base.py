@@ -10,12 +10,12 @@ from typing import Any, ClassVar, Dict, List, Literal, Optional, Type, TypedDict
 import httpx
 import pydantic
 from oauthlib.oauth2 import WebApplicationClient
-from starlette.exceptions import HTTPException
-from starlette.requests import Request
-from starlette.responses import RedirectResponse
+from litestar.exceptions import HTTPException
+from litestar import Request
+from litestar.response import Redirect
 
-from fastapi_sso.pkce import get_pkce_challenge_pair
-from fastapi_sso.state import generate_random_state
+from litestar_sso.pkce import get_pkce_challenge_pair
+from litestar_sso.state import generate_random_state
 
 logger = logging.getLogger(__name__)
 
@@ -267,7 +267,7 @@ class SSOBase:
         redirect_uri: Optional[str] = None,
         params: Optional[Dict[str, Any]] = None,
         state: Optional[str] = None,
-    ) -> RedirectResponse:
+    ) -> Redirect:
         """Constructs and returns a redirect response to the login page of OAuth SSO provider.
 
         Args:
@@ -276,12 +276,12 @@ class SSOBase:
             state (Optional[str]): The state parameter for the OAuth 2.0 authorization request.
 
         Returns:
-            RedirectResponse: A Starlette response directing to the login page of the OAuth SSO provider.
+            Redirect: A Starlette response directing to the login page of the OAuth SSO provider.
         """
         if self.requires_state and not state:
             state = self._generated_state
         login_uri = await self.get_login_url(redirect_uri=redirect_uri, params=params, state=state)
-        response = RedirectResponse(login_uri, 303)
+        response = Redirect(login_uri, status_code=303, headers={"location": login_uri})
         if self.uses_pkce:
             response.set_cookie("pkce_code_verifier", str(self._pkce_code_verifier))
         return response

@@ -1,5 +1,5 @@
-site_name: fastapi-sso
-site_url: https://tomasvotava.github.io/fastapi-sso/
+site_name: litestar-sso
+site_url: https://tomasvotava.github.io/litestar-sso/
 site_author: Tomas Votava <info@tomasvotava.eu>
 site_dir: ./public
 theme:
@@ -30,7 +30,7 @@ theme:
   language: en
   icon:
     logo: fontawesome/solid/users
-repo_url: https://github.com/tomasvotava/fastapi-sso
+repo_url: https://github.com/tomasvotava/litestar-sso
 extra:
   consent:
     title: Cookie consent
@@ -47,7 +47,7 @@ extra:
     property: 407765678
   social:
     - icon: material/github
-      link: https://github.com/tomasvotava/fastapi-sso
+      link: https://github.com/tomasvotava/litestar-sso
     - icon: simple/buymeacoffee
       link: https://www.buymeacoffee.com/tomas.votava
 copyright: >

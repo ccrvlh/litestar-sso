@@ -2,7 +2,7 @@
 
 from typing import TYPE_CHECKING, ClassVar, Optional
 
-from fastapi_sso.sso.base import DiscoveryDocument, OpenID, SSOBase, SSOLoginError
+from litestar_sso.sso.base import DiscoveryDocument, OpenID, SSOBase, SSOLoginError
 
 if TYPE_CHECKING:
     import httpx  # pragma: no cover

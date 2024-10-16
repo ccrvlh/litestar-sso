@@ -2,7 +2,7 @@
 
 from typing import TYPE_CHECKING, ClassVar, Dict, Optional
 
-from fastapi_sso.sso.base import DiscoveryDocument, OpenID, SSOBase
+from litestar_sso.sso.base import DiscoveryDocument, OpenID, SSOBase
 
 if TYPE_CHECKING:
     import httpx  # pragma: no cover

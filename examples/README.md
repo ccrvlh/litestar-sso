@@ -1,4 +1,4 @@
-# FastAPI-SSO Examples
+# litestar-sso Examples
 
 See individual Python files for working examples.
 

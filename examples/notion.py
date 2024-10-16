@@ -3,13 +3,15 @@
 
 import os
 import uvicorn
-from fastapi import FastAPI, Request
-from fastapi_sso.sso.notion import NotionSSO
+from litestar import Litestar
+from litestar import Request
+from litestar import get
+from litestar_sso.sso.notion import NotionSSO
 
 CLIENT_ID = os.environ["CLIENT_ID"]
 CLIENT_SECRET = os.environ["CLIENT_SECRET"]
 
-app = FastAPI()
+app = Litestar()
 
 sso = NotionSSO(
     client_id=CLIENT_ID,
@@ -19,14 +21,14 @@ sso = NotionSSO(
 )
 
 
-@app.get("/oauth2/login")
+@get("/oauth2/login")
 async def auth_init():
     """Initialize auth and redirect"""
     with sso:
         return await sso.get_login_redirect()
 
 
-@app.get("/oauth2/callback")
+@get("/oauth2/callback")
 async def auth_callback(request: Request):
     """Verify login"""
     with sso:

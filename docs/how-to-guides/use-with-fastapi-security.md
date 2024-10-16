@@ -1,21 +1,21 @@
 # Using with fastapi's Security
 
-Even though `fastapi-sso` does not try to solve login and authentication, it is clear that you
+Even though `litestar-sso` does not try to solve login and authentication, it is clear that you
 will probably mostly use it to protect your endpoints. This is why it is important to know how
 to use it with fastapi's security.
 
 You were asking how to put the lock 🔒 icon to your Swagger docs
-in [this issue](https://github.com/tomasvotava/fastapi-sso/issues/33). This is how you do it.
+in [this issue](https://github.com/tomasvotava/litestar-sso/issues/33). This is how you do it.
 
 ## Requirements
 
 - `fastapi` - obviously
-- `fastapi-sso` - duh
+- `litestar-sso` - duh
 - `python-jose[cryptography]` - to sign and verify our JWTs
 
 ## Explanation
 
-Fastapi-SSO is here to arrange the communication between your app and the login provider (such as Google).
+litestar-sso is here to arrange the communication between your app and the login provider (such as Google).
 It does not store any state of this communication and so it is up to you to make sure you don't have to
 ask the user to login again and again.
 
@@ -36,8 +36,8 @@ import datetime  # to calculate expiration of the JWT
 from fastapi import FastAPI, Depends, HTTPException, Security, Request
 from fastapi.responses import RedirectResponse
 from fastapi.security import APIKeyCookie  # this is the part that puts the lock icon to the docs
-from fastapi_sso.sso.google import GoogleSSO  # pip install fastapi-sso
-from fastapi_sso.sso.base import OpenID
+from litestar_sso.sso.google import GoogleSSO  # pip install litestar-sso
+from litestar_sso.sso.base import OpenID
 
 from jose import jwt  # pip install python-jose[cryptography]
 
@@ -47,7 +47,7 @@ CLIENT_SECRET = "your-client-secret"  # your Google OAuth2 client secret
 
 sso = GoogleSSO(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri="http://127.0.0.1:5000/auth/callback")
 
-app = FastAPI()
+app = Litestar()
 
 
 async def get_logged_user(cookie: str = Security(APIKeyCookie(name="token"))) -> OpenID:
@@ -120,7 +120,7 @@ Try visiting [`http://127.0.0.1:5000/protected`](http://127.0.0.1:5000/protected
 
 ```json
 {
-    "detail": "Not authenticated"
+  "detail": "Not authenticated"
 }
 ```
 
@@ -131,7 +131,7 @@ Then visit [`http://127.0.0.1:5000/protected`](http://127.0.0.1:5000/protected).
 
 ```json
 {
-    "message": "You are very welcome, ijustfarted@example.com"
+  "message": "You are very welcome, ijustfarted@example.com"
 }
 ```
 

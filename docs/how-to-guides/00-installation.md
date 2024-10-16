@@ -3,11 +3,11 @@
 ## Install using `poetry`
 
 ```console
-poetry add fastapi-sso
+poetry add litestar-sso
 ```
 
 ## Install using `pip`
 
 ```console
-pip install fastapi-sso
+pip install litestar-sso
 ```
