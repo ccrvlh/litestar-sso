@@ -17,14 +17,14 @@ from litestar_sso.sso.gitlab import GitlabSSO
 from litestar_sso.sso.google import GoogleSSO
 from litestar_sso.sso.kakao import KakaoSSO
 from litestar_sso.sso.line import LineSSO
+from litestar_sso.sso.linkedin import LinkedInSSO
 from litestar_sso.sso.microsoft import MicrosoftSSO
 from litestar_sso.sso.naver import NaverSSO
-from litestar_sso.sso.spotify import SpotifySSO
 from litestar_sso.sso.notion import NotionSSO
-from litestar_sso.sso.linkedin import LinkedInSSO
+from litestar_sso.sso.seznam import SeznamSSO
+from litestar_sso.sso.spotify import SpotifySSO
 from litestar_sso.sso.twitter import TwitterSSO
 from litestar_sso.sso.yandex import YandexSSO
-from litestar_sso.sso.seznam import SeznamSSO
 
 GenericProvider = create_provider(
     name="generic",

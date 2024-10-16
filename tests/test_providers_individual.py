@@ -1,4 +1,5 @@
 import pytest
+
 from litestar_sso import NotionSSO, OpenID, SSOLoginError
 
 
