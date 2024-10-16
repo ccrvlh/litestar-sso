@@ -8,6 +8,8 @@ from litestar.response import Redirect
 from utils import AnythingDict, Request, Response, make_fake_async_client
 
 from litestar_sso.sso.base import OpenID, SSOBase
+from litestar_sso.sso.base import OpenID
+from litestar_sso.sso.base import SSOBase
 from litestar_sso.sso.base import SecurityWarning
 from litestar_sso.sso.facebook import FacebookSSO
 from litestar_sso.sso.fitbit import FitbitSSO
@@ -25,6 +27,14 @@ from litestar_sso.sso.seznam import SeznamSSO
 from litestar_sso.sso.spotify import SpotifySSO
 from litestar_sso.sso.twitter import TwitterSSO
 from litestar_sso.sso.yandex import YandexSSO
+from litestar_sso.sso.microsoft import MicrosoftSSO
+from litestar_sso.sso.naver import NaverSSO
+from litestar_sso.sso.spotify import SpotifySSO
+from litestar_sso.sso.notion import NotionSSO
+from litestar_sso.sso.linkedin import LinkedInSSO
+from litestar_sso.sso.twitter import TwitterSSO
+from litestar_sso.sso.yandex import YandexSSO
+from litestar_sso.sso.seznam import SeznamSSO
 
 GenericProvider = create_provider(
     name="generic",
