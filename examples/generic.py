@@ -1,5 +1,4 @@
-"""This is an example usage of litestar-sso.
-"""
+"""This is an example usage of litestar-sso."""
 
 import uvicorn
 from typing import Any, Dict, Union
