@@ -23,14 +23,14 @@ sso = YandexSSO(
 @get("/auth/login")
 async def auth_init():
     """Initialize auth and redirect"""
-    with sso:
+    async with sso:
         return await sso.get_login_redirect()
 
 
 @get("/auth/callback")
 async def auth_callback(request: Request):
     """Verify login"""
-    with sso:
+    async with sso:
         user = await sso.verify_and_process(request)
         return user
 

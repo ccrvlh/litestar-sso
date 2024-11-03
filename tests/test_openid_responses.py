@@ -227,5 +227,5 @@ async def test_provider_openid_by_response(
     ProviderClass: Type[SSOBase], response: Dict[str, Any], openid: OpenID
 ) -> None:
     sso = ProviderClass("client_id", "client_secret")
-    with sso:
+    async with sso:
         assert await sso.openid_from_response(response) == openid
