@@ -4,9 +4,9 @@
 import asyncio
 from unittest.mock import Mock, patch
 
-from starlette.datastructures import URL
+from litestar.datastructures import URL
 
-from fastapi_sso import create_provider
+from litestar_sso import create_provider
 
 
 async def test__race_condition():
