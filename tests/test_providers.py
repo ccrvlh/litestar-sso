@@ -7,10 +7,10 @@ import pytest
 from litestar.response import Redirect
 from utils import AnythingDict, Request, Response, make_fake_async_client
 
-from litestar_sso.sso.base import OpenID, SSOBase
-from litestar_sso.sso.base import OpenID
-from litestar_sso.sso.base import SSOBase
-from litestar_sso.sso.base import SecurityWarning
+from litestar_sso.base import OpenID, SSOBase
+from litestar_sso.base import OpenID
+from litestar_sso.base import SSOBase
+from litestar_sso.base import SecurityWarning
 from litestar_sso.sso.facebook import FacebookSSO
 from litestar_sso.sso.fitbit import FitbitSSO
 from litestar_sso.sso.generic import create_provider

@@ -1,4 +1,4 @@
-from litestar_sso.sso.base import OpenID
+from litestar_sso.base import OpenID
 from litestar_sso.sso.generic import create_provider
 
 DISCOVERY = {

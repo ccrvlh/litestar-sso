@@ -2,7 +2,7 @@ from typing import Any, Dict, Tuple, Type
 
 import pytest
 
-from litestar_sso.sso.base import OpenID, SSOBase
+from litestar_sso.base import OpenID, SSOBase
 from litestar_sso.sso.facebook import FacebookSSO
 from litestar_sso.sso.fitbit import FitbitSSO
 from litestar_sso.sso.github import GithubSSO

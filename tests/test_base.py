@@ -5,7 +5,7 @@ import os
 import pytest
 from utils import Request
 
-from litestar_sso.sso.base import SecurityWarning, SSOBase, SSOLoginError, UnsetStateWarning
+from litestar_sso.base import SecurityWarning, SSOBase, SSOLoginError, UnsetStateWarning
 
 
 class TestSSOBase:

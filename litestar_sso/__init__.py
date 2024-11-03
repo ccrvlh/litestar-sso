@@ -3,7 +3,7 @@
 (such as Facebook login, Google login and login via Microsoft Office 365 account)
 """
 
-from .sso.base import OpenID, SSOBase, SSOLoginError
+from .base import OpenID, SSOBase, SSOLoginError
 from .sso.facebook import FacebookSSO
 from .sso.fitbit import FitbitSSO
 from .sso.generic import create_provider

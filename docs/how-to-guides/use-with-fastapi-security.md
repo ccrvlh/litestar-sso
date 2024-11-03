@@ -37,7 +37,7 @@ from litestar import Litestar, Depends, HTTPException, Security, Request
 from litestar.responses import RedirectResponse
 from litestar.security import APIKeyCookie  # this is the part that puts the lock icon to the docs
 from litestar_sso.sso.google import GoogleSSO  # pip install litestar-sso
-from litestar_sso.sso.base import OpenID
+from litestar_sso.base import OpenID
 
 from jose import jwt  # pip install python-jose[cryptography]
 

@@ -54,7 +54,7 @@ async def test__race_condition():
             await asyncio.sleep(0)
             return Response(token="")
 
-    with patch("litestar_sso.sso.base.httpx") as httpx:
+    with patch("litestar_sso.base.httpx") as httpx:
         httpx.AsyncClient = AsyncClient
 
         first_response = Response(token="first_token")  # noqa: S106
