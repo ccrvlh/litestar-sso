@@ -5,7 +5,7 @@ import os
 import uvicorn
 from litestar import Litestar, Request, get
 
-from litestar_sso.sso.yandex import YandexSSO
+from litestar_sso.providers.yandex import YandexSSO
 
 CLIENT_ID = os.environ["CLIENT_ID"]
 CLIENT_SECRET = os.environ["CLIENT_SECRET"]

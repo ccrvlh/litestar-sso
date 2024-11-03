@@ -5,7 +5,7 @@ import os
 import uvicorn
 from litestar import Litestar, Request, get
 
-from litestar_sso.sso.kakao import KakaoSSO
+from litestar_sso.providers.kakao import KakaoSSO
 
 CLIENT_ID = os.environ["CLIENT_ID"]
 CLIENT_SECRET = os.environ["CLIENT_SECRET"]

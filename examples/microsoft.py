@@ -5,7 +5,7 @@ import os
 import uvicorn
 from litestar import Litestar, Request, get
 
-from litestar_sso.sso.microsoft import MicrosoftSSO
+from litestar_sso.providers.microsoft import MicrosoftSSO
 
 CLIENT_ID = os.environ["CLIENT_ID"]
 CLIENT_SECRET = os.environ["CLIENT_SECRET"]

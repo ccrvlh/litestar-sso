@@ -8,7 +8,7 @@ from litestar import Litestar, Request, get
 from litestar.exceptions import HTTPException
 
 from litestar_sso.base import DiscoveryDocument, OpenID
-from litestar_sso.sso.generic import create_provider
+from litestar_sso.providers.generic import create_provider
 
 app = Litestar()
 

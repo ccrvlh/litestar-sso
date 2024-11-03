@@ -5,7 +5,7 @@ import os
 import uvicorn
 from litestar import Litestar, Request, get
 
-from litestar_sso.sso.github import GithubSSO
+from litestar_sso.providers.github import GithubSSO
 
 CLIENT_ID = os.environ["CLIENT_ID"]
 CLIENT_SECRET = os.environ["CLIENT_SECRET"]

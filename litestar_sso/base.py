@@ -12,12 +12,12 @@ from typing import Any, ClassVar, Dict, List, Literal, Optional, Type, TypedDict
 import httpx
 import pydantic
 from litestar import Request
-from litestar.exceptions import HTTPException
 from litestar.response import Redirect
 from oauthlib.oauth2 import WebApplicationClient
 
 from litestar_sso.pkce import get_pkce_challenge_pair
-from litestar_sso.state import generate_random_state
+from litestar_sso.utils import generate_random_state
+from litestar_sso.exceptions import SecurityWarning, UnsetStateWarning, ReusedOauthClientWarning, SSOLoginError
 
 if sys.version_info < (3, 10):
     from typing import Callable
@@ -41,21 +41,6 @@ class DiscoveryDocument(TypedDict):
     userinfo_endpoint: str
 
 
-class UnsetStateWarning(UserWarning):
-    """Warning about unset state parameter."""
-
-
-class ReusedOauthClientWarning(UserWarning):
-    """Warning about reused oauth client instance."""
-
-
-class SSOLoginError(HTTPException):
-    """Raised when any login-related error ocurrs.
-
-    Such as when user is not verified or if there was an attempt for fake login.
-    """
-
-
 class OpenID(pydantic.BaseModel):
     """Class (schema) to represent information got from sso provider in a common form."""
 
@@ -66,10 +51,6 @@ class OpenID(pydantic.BaseModel):
     display_name: Optional[str] = None
     picture: Optional[str] = None
     provider: Optional[str] = None
-
-
-class SecurityWarning(UserWarning):
-    """Raised when insecure usage is detected"""
 
 
 def requires_async_context(func: Callable[P, T]) -> Callable[P, T]:

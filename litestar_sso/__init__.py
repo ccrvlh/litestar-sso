@@ -4,20 +4,20 @@
 """
 
 from .base import OpenID, SSOBase, SSOLoginError
-from .sso.facebook import FacebookSSO
-from .sso.fitbit import FitbitSSO
-from .sso.generic import create_provider
-from .sso.github import GithubSSO
-from .sso.gitlab import GitlabSSO
-from .sso.google import GoogleSSO
-from .sso.kakao import KakaoSSO
-from .sso.line import LineSSO
-from .sso.linkedin import LinkedInSSO
-from .sso.microsoft import MicrosoftSSO
-from .sso.naver import NaverSSO
-from .sso.notion import NotionSSO
-from .sso.spotify import SpotifySSO
-from .sso.twitter import TwitterSSO
+from .providers.facebook import FacebookSSO
+from .providers.fitbit import FitbitSSO
+from .providers.generic import create_provider
+from .providers.github import GithubSSO
+from .providers.gitlab import GitlabSSO
+from .providers.google import GoogleSSO
+from .providers.kakao import KakaoSSO
+from .providers.line import LineSSO
+from .providers.linkedin import LinkedInSSO
+from .providers.microsoft import MicrosoftSSO
+from .providers.naver import NaverSSO
+from .providers.notion import NotionSSO
+from .providers.spotify import SpotifySSO
+from .providers.twitter import TwitterSSO
 
 __all__ = [
     "OpenID",
