@@ -13,7 +13,7 @@ Fill in the `Authorized redirect URIs` field with `http://localhost:3000/google/
 Then, copy the `Client ID` and `Client secret` and paste them into the following code:
 
 ```python
-from fastapi import FastAPI
+from litestar import Litestar
 from starlette.requests import Request
 from litestar_sso.sso.google import GoogleSSO
 
@@ -46,12 +46,12 @@ You should be redirected to Google login page. After successful login, you shoul
 
 ## Using SSO as a dependency
 
-You may use SSO as a dependency in your FastAPI application.
+You may use SSO as a dependency in your Litestar application.
 This is useful if you want to use the same SSO instance in multiple endpoints and make sure the state is cleared after
 the request is processed. You may even omit the `with` statement in this case.
 
 ```python
-from fastapi import Depends, FastAPI, Request
+from litestar import Depends, Litestar, Request
 from litestar_sso.sso.google import GoogleSSO
 
 app = Litestar()

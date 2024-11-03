@@ -8,8 +8,8 @@ Example:
 
 ```python
 
-from fastapi import Request
-from fastapi.responses import RedirectResponse
+from litestar import Request
+from litestar.responses import RedirectResponse
 
 google_sso = GoogleSSO("client-id", "client-secret")
 

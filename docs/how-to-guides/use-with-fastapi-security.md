@@ -1,15 +1,15 @@
-# Using with fastapi's Security
+# Using with litestar's Security
 
 Even though `litestar-sso` does not try to solve login and authentication, it is clear that you
 will probably mostly use it to protect your endpoints. This is why it is important to know how
-to use it with fastapi's security.
+to use it with litestar's security.
 
 You were asking how to put the lock 🔒 icon to your Swagger docs
 in [this issue](https://github.com/tomasvotava/litestar-sso/issues/33). This is how you do it.
 
 ## Requirements
 
-- `fastapi` - obviously
+- `litestar` - obviously
 - `litestar-sso` - duh
 - `python-jose[cryptography]` - to sign and verify our JWTs
 
@@ -27,15 +27,15 @@ the token was not changed.
 This makes JWTs very helpful, because it's the thing that comes from the user that you can actually trust.
 
 In this example, we will save the JWT into a cookie so that the user sends it with every request. We will
-also use fastapi's `Depends` to make sure that the user is authenticated before accessing the endpoint.
+also use litestar's `Depends` to make sure that the user is authenticated before accessing the endpoint.
 
 ## Example
 
 ```python
 import datetime  # to calculate expiration of the JWT
-from fastapi import FastAPI, Depends, HTTPException, Security, Request
-from fastapi.responses import RedirectResponse
-from fastapi.security import APIKeyCookie  # this is the part that puts the lock icon to the docs
+from litestar import Litestar, Depends, HTTPException, Security, Request
+from litestar.responses import RedirectResponse
+from litestar.security import APIKeyCookie  # this is the part that puts the lock icon to the docs
 from litestar_sso.sso.google import GoogleSSO  # pip install litestar-sso
 from litestar_sso.sso.base import OpenID
 
@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
 Visit [`http://127.0.0.1:5000/docs/`](http://127.0.0.1:5000/docs/)
 
-![Swagger docs with lock icon](./fastapi-security.png)
+![Swagger docs with lock icon](./litestar-security.png)
 
 ### Accessing the `/protected` endpoint before login
 

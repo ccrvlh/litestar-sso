@@ -90,6 +90,6 @@ nav:
       - how-to-guides/http-development.md
       - how-to-guides/redirect-uri-request-time.md
       - how-to-guides/state-return-url.md
-      - how-to-guides/use-with-fastapi-security.md
+      - how-to-guides/use-with-litestar-security.md
       - how-to-guides/key-error.md
   - contributing.md

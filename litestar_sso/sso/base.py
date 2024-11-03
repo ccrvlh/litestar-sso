@@ -79,7 +79,7 @@ def requires_async_context(func: Callable[P, T]) -> Callable[P, T]:
         if not args[0]._in_stack:
             warnings.warn(
                 "Please make sure you are using SSO provider in an async context (using 'async with provider:'). "
-                "See https://github.com/tomasvotava/fastapi-sso/issues/186 for more information.",
+                "See https://github.com/tomasvotava/litestar-sso/issues/186 for more information.",
                 category=SecurityWarning,
                 stacklevel=1,
             )
@@ -357,10 +357,10 @@ class SSOBase:
         redirect_uri: Optional[str] = None,
         convert_response: Union[Literal[True], Literal[False]] = True,
     ) -> Union[Optional[OpenID], Optional[Dict[str, Any]]]:
-        """Processes the login given a FastAPI (Starlette) Request object. This should be used for the /callback path.
+        """Processes the login given a Litestar (Starlette) Request object. This should be used for the /callback path.
 
         Args:
-            request (Request): FastAPI or Starlette request object.
+            request (Request): Litestar or Starlette request object.
             params (Optional[Dict[str, Any]]): Additional query parameters to pass to the provider.
             headers (Optional[Dict[str, Any]]): Additional headers to pass to the provider.
             redirect_uri (Optional[str]): Overrides the `redirect_uri` specified on this instance.
@@ -404,7 +404,7 @@ class SSOBase:
     def __enter__(self) -> "SSOBase":
         warnings.warn(
             "SSO Providers are supposed to be used in async context, please change 'with provider' to "
-            "'async with provider'. See https://github.com/tomasvotava/fastapi-sso/issues/186 for more information.",
+            "'async with provider'. See https://github.com/tomasvotava/litestar-sso/issues/186 for more information.",
             DeprecationWarning,
             stacklevel=1,
         )
@@ -495,7 +495,7 @@ class SSOBase:
 
         Args:
             code (str): The authorization code.
-            request (Request): FastAPI or Starlette request object.
+            request (Request): Litestar or Starlette request object.
             params (Optional[Dict[str, Any]]): Additional query parameters to pass to the provider.
             additional_headers (Optional[Dict[str, Any]]): Additional headers to be added to all requests.
             redirect_uri (Optional[str]): Overrides the `redirect_uri` specified on this instance.

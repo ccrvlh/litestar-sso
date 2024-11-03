@@ -1,4 +1,4 @@
-# See [!186](https://github.com/tomasvotava/fastapi-sso/issues/186)
+# See [!186](https://github.com/tomasvotava/litestar-sso/issues/186)
 # Author: @parikls
 
 import asyncio

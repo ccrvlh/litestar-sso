@@ -1,4 +1,4 @@
-# FastAPI SSO
+# Litestar SSO
 
 ![Supported Python Versions](https://img.shields.io/pypi/pyversions/litestar-sso)
 [![Test coverage](https://codecov.io/gh/tomasvotava/litestar-sso/graph/badge.svg?token=SIFCTVSSOS)](https://codecov.io/gh/tomasvotava/litestar-sso)
@@ -11,7 +11,7 @@
 ![Project License](https://img.shields.io/github/license/tomasvotava/litestar-sso)
 ![PyPi Version](https://img.shields.io/pypi/v/litestar-sso)
 
-FastAPI plugin to enable SSO to most common providers (such as Facebook login, Google login and login via
+Litestar plugin to enable SSO to most common providers (such as Facebook login, Google login and login via
 Microsoft Office 365 account).
 
 This allows you to implement the famous `Login with Google/Facebook/Microsoft` buttons functionality on your
@@ -25,7 +25,7 @@ backend very easily.
 
 An awesome demo site was created and is maintained by even awesomer
 [Chris Karvouniaris (@chrisK824)](https://github.com/chrisK824). Chris has also posted multiple
-Medium articles about FastAPI and FastAPI SSO.
+Medium articles about Litestar and Litestar SSO.
 
 Be sure to see his tutorials, follow him and show him some appreciation!
 
