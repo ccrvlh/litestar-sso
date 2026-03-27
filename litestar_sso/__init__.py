@@ -4,6 +4,9 @@
 """
 
 from .base import OpenID, SSOBase, SSOLoginError
+from .providers.apple import AppleSSO
+from .providers.bitbucket import BitbucketSSO
+from .providers.discord import DiscordSSO
 from .providers.facebook import FacebookSSO
 from .providers.fitbit import FitbitSSO
 from .providers.generic import create_provider
@@ -16,13 +19,18 @@ from .providers.linkedin import LinkedInSSO
 from .providers.microsoft import MicrosoftSSO
 from .providers.naver import NaverSSO
 from .providers.notion import NotionSSO
+from .providers.soundcloud import SoundcloudSSO
 from .providers.spotify import SpotifySSO
+from .providers.tidal import TidalSSO
 from .providers.twitter import TwitterSSO
 
 __all__ = [
     "OpenID",
     "SSOBase",
     "SSOLoginError",
+    "AppleSSO",
+    "BitbucketSSO",
+    "DiscordSSO",
     "FacebookSSO",
     "FitbitSSO",
     "create_provider",
@@ -35,6 +43,8 @@ __all__ = [
     "MicrosoftSSO",
     "NaverSSO",
     "NotionSSO",
+    "SoundcloudSSO",
     "SpotifySSO",
+    "TidalSSO",
     "TwitterSSO",
 ]

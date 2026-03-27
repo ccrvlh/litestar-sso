@@ -6,8 +6,10 @@ import os
 import warnings
 from types import TracebackType
 from typing import Any, ClassVar, Dict, List, Literal, Optional, Type, TypedDict, Union, overload
+from urllib.parse import parse_qs, urlsplit
 
 import httpx
+import jwt
 import pydantic
 from litestar import Request
 from litestar.exceptions import HTTPException
@@ -18,6 +20,10 @@ from litestar_sso.pkce import get_pkce_challenge_pair
 from litestar_sso.state import generate_random_state
 
 logger = logging.getLogger(__name__)
+
+
+def _decode_id_token(id_token: str, verify: bool = False) -> dict:
+    return jwt.decode(id_token, options={"verify_signature": verify})
 
 
 class DiscoveryDocument(TypedDict):
@@ -66,6 +72,8 @@ class SSOBase:
     additional_headers: ClassVar[Optional[Dict[str, Any]]] = None
     uses_pkce: bool = False
     requires_state: bool = False
+    use_id_token_for_user_info: ClassVar[bool] = False
+    use_basic_auth: ClassVar[bool] = True
 
     _pkce_challenge_length: int = 96
 
@@ -185,6 +193,18 @@ class SSOBase:
         """
         raise NotImplementedError(f"Provider {self.provider} not supported")
 
+    async def openid_from_token(self, id_token: dict, session: Optional[httpx.AsyncClient] = None) -> OpenID:
+        """Converts an ID token from the provider's token endpoint to an OpenID object.
+
+        Args:
+            id_token (dict): The id token data retrieved from the token endpoint.
+            session: (Optional[httpx.AsyncClient]): The HTTPX AsyncClient session.
+
+        Returns:
+            OpenID: The user information in a standardized format.
+        """
+        raise NotImplementedError(f"Provider {self.provider} not supported")
+
     async def get_discovery_document(self) -> DiscoveryDocument:
         """Retrieves the discovery document containing useful URLs.
 
@@ -284,6 +304,8 @@ class SSOBase:
         response = Redirect(login_uri, status_code=303, headers={"location": login_uri})
         if self.uses_pkce:
             response.set_cookie("pkce_code_verifier", str(self._pkce_code_verifier))
+        if state is not None:
+            response.set_cookie("sso_state", state)
         return response
 
     @overload
@@ -334,16 +356,38 @@ class SSOBase:
             Optional[Dict[str, Any]]: The original JSON response from the API.
         """
         headers = headers or {}
-        code = request.query_params.get("code")
+        callback_params: Dict[str, Any] = dict(request.query_params)
+
+        request_method = str(getattr(request, "method", "GET")).upper()
+        if "code" not in callback_params and request_method == "POST":
+            form_data = await request.form()
+            callback_params = dict(form_data)
+
+        error = callback_params.get("error")
+        if error == "access_denied":
+            raise SSOLoginError(401, "User has denied access")
+        elif error:
+            raise SSOLoginError(400, f"OAuth error: {error}")
+
+        code = callback_params.get("code")
         if code is None:
+            param_count = len(callback_params)
+            has_state_param = "state" in callback_params
             logger.debug(
-                "Callback request:\n\tURI: %s\n\tHeaders: %s\n\tQuery params: %s",
-                request.url,
-                request.headers,
-                request.query_params,
+                "Callback request missing code parameter (param_count=%d, has_state_param=%s).",
+                param_count,
+                has_state_param,
             )
             raise SSOLoginError(400, "'code' parameter was not found in callback request")
-        self._state = request.query_params.get("state")
+        self._state = callback_params.get("state")
+        if self._state is None and self.requires_state:
+            raise SSOLoginError(400, "'state' parameter was not found in callback request")
+        if self._state is not None:
+            sso_state = request.cookies.get("sso_state")
+            if sso_state is None and self.requires_state:
+                raise SSOLoginError(401, "State cookie not found")
+            if sso_state is not None and sso_state != self._state:
+                raise SSOLoginError(401, "Invalid state")
         pkce_code_verifier: Optional[str] = None
         if self.uses_pkce:
             pkce_code_verifier = request.cookies.get("pkce_code_verifier")
@@ -464,13 +508,16 @@ class SSOBase:
             current_url = str(url)
 
         current_path = f"{url.scheme}://{url.netloc}{url.path}"
+        parsed_current_url = urlsplit(current_url)
+        has_code_in_query = "code" in parse_qs(parsed_current_url.query)
+        authorization_response: Optional[str] = current_url if has_code_in_query else None
 
         if pkce_code_verifier:
             params.update({"code_verifier": pkce_code_verifier})
 
         token_url, headers, body = self.oauth_client.prepare_token_request(
             await self.token_endpoint,
-            authorization_response=current_url,
+            authorization_response=authorization_response,
             redirect_url=redirect_uri or self.redirect_uri or current_path,
             code=code,
             **params,
@@ -481,14 +528,26 @@ class SSOBase:
 
         headers.update(additional_headers)
 
-        auth = httpx.BasicAuth(self.client_id, self.client_secret)
+        auth: Optional[httpx.BasicAuth] = None
+        if self.use_basic_auth:
+            auth = httpx.BasicAuth(self.client_id, self.client_secret)
 
         async with httpx.AsyncClient() as session:
-            response = await session.post(token_url, headers=headers, content=body, auth=auth)
+            if auth is None:
+                response = await session.post(token_url, headers=headers, content=body)
+            else:
+                response = await session.post(token_url, headers=headers, content=body, auth=auth)
             content = response.json()
             self._refresh_token = content.get("refresh_token")
             self._id_token = content.get("id_token")
             self.oauth_client.parse_request_body_response(json.dumps(content))
+
+            if self.use_id_token_for_user_info:
+                if not self._id_token:
+                    raise SSOLoginError(401, f"Provider {self.provider!r} did not return id token.")
+                if convert_response:
+                    return await self.openid_from_token(_decode_id_token(self._id_token), session)
+                return _decode_id_token(self._id_token)
 
             uri, headers, _ = self.oauth_client.add_token(await self.userinfo_endpoint)
             headers.update(additional_headers)
