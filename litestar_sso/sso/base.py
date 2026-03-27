@@ -1,53 +1,58 @@
 """SSO login base dependency."""
 
-import asyncio
 import json
 import logging
 import os
-import sys
 import warnings
 from types import TracebackType
-from typing import Any, ClassVar, Dict, List, Literal, Optional, Type, TypedDict, TypeVar, Union, overload
+from typing import Any, ClassVar, Dict, List, Literal, Optional, Type, TypedDict, Union, overload
 
 import httpx
 import pydantic
 from litestar import Request
+from litestar.exceptions import HTTPException
 from litestar.response import Redirect
 from oauthlib.oauth2 import WebApplicationClient
 
 from litestar_sso.pkce import get_pkce_challenge_pair
-from litestar_sso.schemas import DiscoveryDocument, OpenID
-from litestar_sso.utils import generate_random_state
-from litestar_sso.exceptions import SecurityWarning, UnsetStateWarning, ReusedOauthClientWarning, SSOLoginError
-
-if sys.version_info < (3, 10):
-    from typing import Callable
-
-    from typing_extensions import ParamSpec
-else:
-    from collections.abc import Callable
-    from typing import ParamSpec
+from litestar_sso.state import generate_random_state
 
 logger = logging.getLogger(__name__)
 
-T = TypeVar("T")
-P = ParamSpec("P")
+
+class DiscoveryDocument(TypedDict):
+    """Discovery document."""
+
+    authorization_endpoint: str
+    token_endpoint: str
+    userinfo_endpoint: str
 
 
-def requires_async_context(func: Callable[P, T]) -> Callable[P, T]:
-    def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
-        if not args or not isinstance(args[0], SSOBase):
-            return func(*args, **kwargs)
-        if not args[0]._in_stack:
-            warnings.warn(
-                "Please make sure you are using SSO provider in an async context (using 'async with provider:'). "
-                "See https://github.com/tomasvotava/litestar-sso/issues/186 for more information.",
-                category=SecurityWarning,
-                stacklevel=1,
-            )
-        return func(*args, **kwargs)
+class UnsetStateWarning(UserWarning):
+    """Warning about unset state parameter."""
 
-    return wrapper
+
+class ReusedOauthClientWarning(UserWarning):
+    """Warning about reused oauth client instance."""
+
+
+class SSOLoginError(HTTPException):
+    """Raised when any login-related error ocurrs.
+
+    Such as when user is not verified or if there was an attempt for fake login.
+    """
+
+
+class OpenID(pydantic.BaseModel):
+    """Class (schema) to represent information got from sso provider in a common form."""
+
+    id: Optional[str] = None
+    email: Optional[pydantic.EmailStr] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    display_name: Optional[str] = None
+    picture: Optional[str] = None
+    provider: Optional[str] = None
 
 
 class SSOBase:
@@ -78,8 +83,6 @@ class SSOBase:
         self.client_secret: str = client_secret
         self.redirect_uri: Optional[Union[pydantic.AnyHttpUrl, str]] = redirect_uri
         self.allow_insecure_http: bool = allow_insecure_http
-        self._login_lock = asyncio.Lock()
-        self._in_stack = False
         self._oauth_client: Optional[WebApplicationClient] = None
         self._generated_state: Optional[str] = None
 
@@ -125,7 +128,6 @@ class SSOBase:
         return self._state
 
     @property
-    @requires_async_context
     def oauth_client(self) -> WebApplicationClient:
         """Retrieves the OAuth Client to aid in generating requests and parsing responses.
 
@@ -142,7 +144,6 @@ class SSOBase:
         return self._oauth_client
 
     @property
-    @requires_async_context
     def access_token(self) -> Optional[str]:
         """Retrieves the access token from token endpoint.
 
@@ -152,7 +153,6 @@ class SSOBase:
         return self.oauth_client.access_token
 
     @property
-    @requires_async_context
     def refresh_token(self) -> Optional[str]:
         """Retrieves the refresh token if returned from provider.
 
@@ -162,7 +162,6 @@ class SSOBase:
         return self._refresh_token or self.oauth_client.refresh_token
 
     @property
-    @requires_async_context
     def id_token(self) -> Optional[str]:
         """Retrieves the id token if returned from provider.
 
@@ -170,30 +169,6 @@ class SSOBase:
             Optional[str]: The id token if available.
         """
         return self._id_token
-
-    @property
-    async def authorization_endpoint(self) -> Optional[str]:
-        """Return `authorization_endpoint` from discovery document."""
-        discovery = await self.get_discovery_document()
-        return discovery.get("authorization_endpoint")
-
-    @property
-    async def token_endpoint(self) -> Optional[str]:
-        """Return `token_endpoint` from discovery document."""
-        discovery = await self.get_discovery_document()
-        return discovery.get("token_endpoint")
-
-    @property
-    async def userinfo_endpoint(self) -> Optional[str]:
-        """Return `userinfo_endpoint` from discovery document."""
-        discovery = await self.get_discovery_document()
-        return discovery.get("userinfo_endpoint")
-
-    @property
-    def _extra_query_params(self) -> Dict:
-        return {}
-
-    ## Base
 
     async def openid_from_response(self, response: dict, session: Optional[httpx.AsyncClient] = None) -> OpenID:
         """Converts a response from the provider's user info endpoint to an OpenID object.
@@ -220,6 +195,24 @@ class SSOBase:
             DiscoveryDocument: A dictionary containing important endpoints like authorization, token and userinfo.
         """
         raise NotImplementedError(f"Provider {self.provider} not supported")
+
+    @property
+    async def authorization_endpoint(self) -> Optional[str]:
+        """Return `authorization_endpoint` from discovery document."""
+        discovery = await self.get_discovery_document()
+        return discovery.get("authorization_endpoint")
+
+    @property
+    async def token_endpoint(self) -> Optional[str]:
+        """Return `token_endpoint` from discovery document."""
+        discovery = await self.get_discovery_document()
+        return discovery.get("token_endpoint")
+
+    @property
+    async def userinfo_endpoint(self) -> Optional[str]:
+        """Return `userinfo_endpoint` from discovery document."""
+        discovery = await self.get_discovery_document()
+        return discovery.get("userinfo_endpoint")
 
     async def get_login_url(
         self,
@@ -293,8 +286,6 @@ class SSOBase:
             response.set_cookie("pkce_code_verifier", str(self._pkce_code_verifier))
         return response
 
-    ## Verify
-
     @overload
     async def verify_and_process(
         self,
@@ -317,7 +308,6 @@ class SSOBase:
         convert_response: Literal[False],
     ) -> Optional[Dict[str, Any]]: ...
 
-    @requires_async_context
     async def verify_and_process(
         self,
         request: Request,
@@ -327,10 +317,10 @@ class SSOBase:
         redirect_uri: Optional[str] = None,
         convert_response: Union[Literal[True], Literal[False]] = True,
     ) -> Union[Optional[OpenID], Optional[Dict[str, Any]]]:
-        """Processes the login given a Litestar (Starlette) Request object. This should be used for the /callback path.
+        """Processes the login given a FastAPI (Starlette) Request object. This should be used for the /callback path.
 
         Args:
-            request (Request): Litestar or Starlette request object.
+            request (Request): FastAPI or Starlette request object.
             params (Optional[Dict[str, Any]]): Additional query parameters to pass to the provider.
             headers (Optional[Dict[str, Any]]): Additional headers to pass to the provider.
             redirect_uri (Optional[str]): Overrides the `redirect_uri` specified on this instance.
@@ -371,7 +361,28 @@ class SSOBase:
             convert_response=convert_response,
         )
 
-    ## Process Login
+    def __enter__(self) -> "SSOBase":
+        self._oauth_client = None
+        self._refresh_token = None
+        self._id_token = None
+        self._state = None
+        if self.requires_state:
+            self._generated_state = generate_random_state()
+        if self.uses_pkce:
+            self._pkce_code_verifier, self._pkce_code_challenge = get_pkce_challenge_pair(self._pkce_challenge_length)
+        return self
+
+    def __exit__(
+        self,
+        _exc_type: Optional[Type[BaseException]],
+        _exc_val: Optional[BaseException],
+        _exc_tb: Optional[TracebackType],
+    ) -> None:
+        return None
+
+    @property
+    def _extra_query_params(self) -> Dict:
+        return {}
 
     @overload
     async def process_login(
@@ -399,7 +410,6 @@ class SSOBase:
         convert_response: Literal[False],
     ) -> Optional[Dict[str, Any]]: ...
 
-    @requires_async_context
     async def process_login(
         self,
         code: str,
@@ -416,7 +426,7 @@ class SSOBase:
 
         Args:
             code (str): The authorization code.
-            request (Request): Litestar or Starlette request object.
+            request (Request): FastAPI or Starlette request object.
             params (Optional[Dict[str, Any]]): Additional query parameters to pass to the provider.
             additional_headers (Optional[Dict[str, Any]]): Additional headers to be added to all requests.
             redirect_uri (Optional[str]): Overrides the `redirect_uri` specified on this instance.
@@ -488,52 +498,3 @@ class SSOBase:
             if convert_response:
                 return await self.openid_from_response(content, session)
             return content
-
-    ## Context Manager
-
-    def __enter__(self) -> "SSOBase":
-        warnings.warn(
-            "SSO Providers are supposed to be used in async context, please change 'with provider' to "
-            "'async with provider'. See https://github.com/tomasvotava/litestar-sso/issues/186 for more information.",
-            DeprecationWarning,
-            stacklevel=1,
-        )
-        self._oauth_client = None
-        self._refresh_token = None
-        self._id_token = None
-        self._state = None
-        if self.requires_state:
-            self._generated_state = generate_random_state()
-        if self.uses_pkce:
-            self._pkce_code_verifier, self._pkce_code_challenge = get_pkce_challenge_pair(self._pkce_challenge_length)
-        return self
-
-    async def __aenter__(self) -> "SSOBase":
-        await self._login_lock.acquire()
-        self._in_stack = True
-        self._oauth_client = None
-        self._refresh_token = None
-        self._id_token = None
-        self._state = None
-        if self.requires_state:
-            self._generated_state = generate_random_state()
-        if self.uses_pkce:
-            self._pkce_code_verifier, self._pkce_code_challenge = get_pkce_challenge_pair(self._pkce_challenge_length)
-        return self
-
-    async def __aexit__(
-        self,
-        _exc_type: Optional[Type[BaseException]],
-        _exc_val: Optional[BaseException],
-        _exc_tb: Optional[TracebackType],
-    ) -> None:
-        self._in_stack = False
-        self._login_lock.release()
-
-    def __exit__(
-        self,
-        _exc_type: Optional[Type[BaseException]],
-        _exc_val: Optional[BaseException],
-        _exc_tb: Optional[TracebackType],
-    ) -> None:
-        return None

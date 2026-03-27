@@ -1,22 +1,22 @@
-# FastAPI SSO
+# Litestar SSO
 
-![Supported Python Versions](https://img.shields.io/pypi/pyversions/fastapi-sso)
-[![Test coverage](https://codecov.io/gh/tomasvotava/fastapi-sso/graph/badge.svg?token=SIFCTVSSOS)](https://codecov.io/gh/tomasvotava/fastapi-sso)
-![Tests Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/fastapi-sso/test.yml?label=tests)
-![Lint Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/fastapi-sso/lint.yml?label=ruff)
-![Mypy Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/fastapi-sso/lint.yml?label=mypy)
-![Black Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/fastapi-sso/lint.yml?label=black)
-![CodeQL Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/fastapi-sso/codeql-analysis.yml?label=CodeQL)
-![PyPi weekly downloads](https://img.shields.io/pypi/dw/fastapi-sso)
-![Project License](https://img.shields.io/github/license/tomasvotava/fastapi-sso)
-![PyPi Version](https://img.shields.io/pypi/v/fastapi-sso)
+![Supported Python Versions](https://img.shields.io/pypi/pyversions/litestar-sso)
+[![Test coverage](https://codecov.io/gh/tomasvotava/litestar-sso/graph/badge.svg?token=SIFCTVSSOS)](https://codecov.io/gh/tomasvotava/litestar-sso)
+![Tests Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/test.yml?label=tests)
+![Lint Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/lint.yml?label=ruff)
+![Mypy Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/lint.yml?label=mypy)
+![Black Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/lint.yml?label=black)
+![CodeQL Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/codeql-analysis.yml?label=CodeQL)
+![PyPi weekly downloads](https://img.shields.io/pypi/dw/litestar-sso)
+![Project License](https://img.shields.io/github/license/tomasvotava/litestar-sso)
+![PyPi Version](https://img.shields.io/pypi/v/litestar-sso)
 
 > [!IMPORTANT]  
 > This is a fork of the FastAPI SSO library, originally designed by [tomasvotava](https://tomasvotava.github.io).
 > The only modification is that this was adapted to work with Litestar, and PR #189 was merged into this fork.
 > Currently, this is best suited as building block, rather than a standalone library.
 
-FastAPI plugin to enable SSO to most common providers (such as Facebook login, Google login and login via
+Litestar plugin to enable SSO to most common providers (such as Facebook login, Google login and login via
 Microsoft Office 365 account).
 
 This allows you to implement the famous `Login with Google/Facebook/Microsoft` buttons functionality on your
@@ -31,7 +31,7 @@ backend very easily.
 ```python
 import os
 from litestar import Litestar, Request, get
-from litestar_sso.sso.google import GoogleSSO
+from litestar_sso import GoogleSSO
 
 CLIENT_ID = os.environ["CLIENT_ID"]
 CLIENT_SECRET = os.environ["CLIENT_SECRET"]
