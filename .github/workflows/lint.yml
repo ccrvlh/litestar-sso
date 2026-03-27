@@ -23,11 +23,9 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Install dependencies
         run: POETRY_VIRTUALENVS_CREATE=false poetry install
-      - name: Analysing the code with ruff
+      - name: Lint with ruff
         run: poetry run poe ruff
+      - name: Format check with ruff
+        run: poetry run poe ruff-format-check
       - name: Static type-checking using mypy
         run: poetry run poe mypy
-      - name: Format checking using black
-        run: poetry run poe black-check
-      - name: Format checking using isort
-        run: poetry run poe isort-check

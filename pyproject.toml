@@ -26,9 +26,6 @@ addopts = [
 ]
 
 
-[tool.black]
-line-length = 120
-
 [tool.ruff]
 exclude = [
     ".archive",
@@ -41,12 +38,6 @@ exclude = [
     "static",
 ]
 line-length = 120
-ignore = [
-    "D100", # Missing docstring in public module
-    "D104", # Missing docstring in public package
-    "D107", # Missing docstring in __init__
-    "E712", # Avoid equality comparison to True
-]
 
 
 [tool.ruff.lint]
@@ -70,6 +61,10 @@ select = [
 ]
 
 ignore = [
+    "D100", # Missing docstring in public module
+    "D104", # Missing docstring in public package
+    "D107", # Missing docstring in __init__
+    "E712", # Avoid equality comparison to True
     "B028", # allow warning without specifying `stacklevel`
 ]
 
@@ -91,7 +86,6 @@ section-order = [
     "third-party",
     "first-party",
     "local-folder",
-    "testing",
 ]
 
 
@@ -105,15 +99,13 @@ convention = "google"
 
 [tool.poe.tasks]
 ruff = "ruff check litestar_sso"
-black = "black litestar_sso"
-isort = "isort --settings-path .isort.cfg litestar_sso"
+ruff-format = "ruff format litestar_sso"
+ruff-format-check = "ruff format --check litestar_sso"
 mypy = "mypy --config-file mypy.ini litestar_sso"
-black-check = "black --check litestar_sso"
-isort-check = "isort --settings-path .isort.cfg --check-only litestar_sso"
-
-format = ["black", "isort"]
-lint = ["ruff", "mypy", "black-check", "isort-check"]
 pre-commit = "pre-commit"
+
+format = ["ruff-format", "ruff"]
+lint = ["ruff", "mypy", "ruff-format-check"]
 
 test = "pytest"
 coverage = "coverage report"
@@ -121,8 +113,6 @@ coverage = "coverage report"
 docs = "mkdocs build --clean"
 
 [tool.poetry.group.dev.dependencies]
-black = ">=23.7.0"
-isort = "^5"
 markdown-include = "^0.8.1"
 mkdocs-material = { extras = ["imaging"], version = "^9.3.2" }
 mkdocstrings = { extras = ["python"], version = ">=0.23,<0.27" }

@@ -28,15 +28,12 @@ from .providers.soundcloud import SoundcloudSSO
 
 
 __all__ = [
-    "OpenID",
-    "SSOBase",
-    "SSOLoginError",
     "AppleSSO",
     "BitbucketSSO",
+    "create_provider",
     "DiscordSSO",
     "FacebookSSO",
     "FitbitSSO",
-    "create_provider",
     "GithubSSO",
     "GitlabSSO",
     "GoogleSSO",
@@ -46,8 +43,11 @@ __all__ = [
     "MicrosoftSSO",
     "NaverSSO",
     "NotionSSO",
+    "OpenID",
     "SoundcloudSSO",
     "SpotifySSO",
+    "SSOBase",
+    "SSOLoginError",
     "TidalSSO",
     "TwitterSSO",
 ]

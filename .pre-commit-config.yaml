@@ -8,9 +8,9 @@ repos:
         types: [python]
         pass_filenames: false
 
-      - id: black
-        name: black
-        entry: poe black-check
+      - id: ruff-format
+        name: ruff-format
+        entry: poe ruff-format-check
         language: system
         types: [python]
         pass_filenames: false
@@ -18,13 +18,6 @@ repos:
       - id: mypy
         name: mypy
         entry: poe mypy
-        language: system
-        types: [python]
-        pass_filenames: false
-
-      - id: isort
-        name: isort
-        entry: poe isort-check
         language: system
         types: [python]
         pass_filenames: false
