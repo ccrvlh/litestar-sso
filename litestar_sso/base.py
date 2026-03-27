@@ -39,9 +39,9 @@ __all__ = [
     "DiscoveryDocument",
     "OpenID",
     "ReusedOauthClientWarning",
-    "SecurityWarning",
     "SSOBase",
     "SSOLoginError",
+    "SecurityWarning",
     "UnsetStateWarning",
 ]
 
