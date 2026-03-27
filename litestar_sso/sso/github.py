@@ -1,8 +1,14 @@
 """Github SSO Oauth Helper class."""
 
-from typing import TYPE_CHECKING, ClassVar, Optional
+from __future__ import annotations
 
-from litestar_sso.sso.base import DiscoveryDocument, OpenID, SSOBase
+from typing import TYPE_CHECKING
+from typing import ClassVar
+
+from litestar_sso.sso.base import OpenID
+from litestar_sso.sso.base import SSOBase
+from litestar_sso.sso.base import DiscoveryDocument
+
 
 if TYPE_CHECKING:
     import httpx  # pragma: no cover
@@ -23,7 +29,7 @@ class GithubSSO(SSOBase):
             "userinfo_endpoint": "https://api.github.com/user",
         }
 
-    async def _get_primary_email(self, session: Optional["httpx.AsyncClient"] = None) -> Optional[str]:
+    async def _get_primary_email(self, session: httpx.AsyncClient | None = None) -> str | None:
         """Attempt to get primary email from Github for a current user.
         The session received must be authenticated.
         """
@@ -35,10 +41,10 @@ class GithubSSO(SSOBase):
         emails = response.json()
         for email in emails:
             if email["primary"]:
-                return email["email"]
+                return str(email["email"])
         return None
 
-    async def openid_from_response(self, response: dict, session: Optional["httpx.AsyncClient"] = None) -> OpenID:
+    async def openid_from_response(self, response: dict, session: httpx.AsyncClient | None = None) -> OpenID:
         return OpenID(
             email=response.get("email") or (await self._get_primary_email(session)),
             provider=self.provider,

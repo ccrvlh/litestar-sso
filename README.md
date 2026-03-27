@@ -1,15 +1,13 @@
 # Litestar SSO
 
 ![Supported Python Versions](https://img.shields.io/pypi/pyversions/litestar-sso)
-[![Test coverage](https://codecov.io/gh/tomasvotava/litestar-sso/graph/badge.svg?token=SIFCTVSSOS)](https://codecov.io/gh/tomasvotava/litestar-sso)
-![Tests Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/test.yml?label=tests)
-![Lint Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/lint.yml?label=ruff)
-![Mypy Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/lint.yml?label=mypy)
-![Black Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/lint.yml?label=black)
-![CodeQL Workflow Status](https://img.shields.io/github/actions/workflow/status/tomasvotava/litestar-sso/codeql-analysis.yml?label=CodeQL)
-![PyPi weekly downloads](https://img.shields.io/pypi/dw/litestar-sso)
-![Project License](https://img.shields.io/github/license/tomasvotava/litestar-sso)
-![PyPi Version](https://img.shields.io/pypi/v/litestar-sso)
+[![Test coverage](https://codecov.io/gh/ccrvlh/litestar-sso/graph/badge.svg?token=SIFCTVSSOS)](https://codecov.io/gh/ccrvlh/litestar-sso)
+![Tests Workflow Status](https://img.shields.io/github/actions/workflow/status/ccrvlh/litestar-sso/test.yml?label=tests)
+![Lint Workflow Status](https://img.shields.io/github/actions/workflow/status/ccrvlh/litestar-sso/lint.yml?label=ruff)
+![Mypy Workflow Status](https://img.shields.io/github/actions/workflow/status/ccrvlh/litestar-sso/lint.yml?label=mypy)
+![Black Workflow Status](https://img.shields.io/github/actions/workflow/status/ccrvlh/litestar-sso/lint.yml?label=black)
+![CodeQL Workflow Status](https://img.shields.io/github/actions/workflow/status/ccrvlh/litestar-sso/codeql-analysis.yml?label=CodeQL)
+![Project License](https://img.shields.io/github/license/ccrvlh/litestar-sso)
 
 > [!IMPORTANT]  
 > This is a fork of the FastAPI SSO library, originally designed by [tomasvotava](https://tomasvotava.github.io).

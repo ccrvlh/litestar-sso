@@ -1,8 +1,8 @@
 """SSO login base dependency."""
 
-import pydantic
+from typing import TypedDict
 
-from typing import Optional, TypedDict
+import pydantic
 
 
 class DiscoveryDocument(TypedDict):
@@ -16,10 +16,10 @@ class DiscoveryDocument(TypedDict):
 class OpenID(pydantic.BaseModel):
     """Class (schema) to represent information got from sso provider in a common form."""
 
-    id: Optional[str] = None
-    email: Optional[pydantic.EmailStr] = None
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    display_name: Optional[str] = None
-    picture: Optional[str] = None
-    provider: Optional[str] = None
+    id: str | None = None
+    email: pydantic.EmailStr | None = None
+    first_name: str | None = None
+    last_name: str | None = None
+    display_name: str | None = None
+    picture: str | None = None
+    provider: str | None = None

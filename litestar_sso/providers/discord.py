@@ -1,10 +1,16 @@
 """Discord SSO Oauth Helper class."""
 
-from typing import TYPE_CHECKING, ClassVar, Optional
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+from typing import ClassVar
 
 import pydantic
 
-from litestar_sso.base import DiscoveryDocument, OpenID, SSOBase
+from litestar_sso.base import OpenID
+from litestar_sso.base import SSOBase
+from litestar_sso.base import DiscoveryDocument
+
 
 if TYPE_CHECKING:
     import httpx  # pragma: no cover
@@ -39,7 +45,7 @@ class DiscordSSO(SSOBase):
             "userinfo_endpoint": "https://discord.com/api/users/@me",
         }
 
-    async def openid_from_response(self, response: dict, session: Optional["httpx.AsyncClient"] = None) -> OpenID:
+    async def openid_from_response(self, response: dict, session: httpx.AsyncClient | None = None) -> OpenID:
         user_id = response.get("id")
         avatar = response.get("avatar")
         picture = None

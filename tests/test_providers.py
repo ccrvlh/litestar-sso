@@ -136,24 +136,46 @@ class TestProviders:
         assert quote_plus(" ".join(sso._scope)) in url, "Login URL must have all scopes"
 
     async def test_process_login(self, Provider: Type[SSOBase], monkeypatch: pytest.MonkeyPatch):
+        from litestar_sso.exceptions import SSOLoginError
+
         sso = Provider("client_id", "client_secret")
+        get_response = Response(
+            url="https://localhost",
+            json_content=AnythingDict(
+                {"token_endpoint": "https://localhost", "userinfo_endpoint": "https://localhost"}
+            ),
+        )
         FakeAsyncClient = make_fake_async_client(
             returns_post=Response(url="https://localhost", json_content={"access_token": "token"}),
-            returns_get=Response(
-                url="https://localhost",
-                json_content=AnythingDict(
-                    {"token_endpoint": "https://localhost", "userinfo_endpoint": "https://localhost"}
-                ),
-            ),
+            returns_get=get_response,
         )
 
         async def fake_openid_from_response(_, __):
             return OpenID(id="test", email="email@example.com", display_name="Test")
 
+        async def fake_openid_from_token(_, __):
+            return OpenID(id="idtoken", email="user@idtoken.com", display_name="ID Token")
+
         async with sso:
             monkeypatch.setattr("httpx.AsyncClient", FakeAsyncClient)
             monkeypatch.setattr(sso, "openid_from_response", fake_openid_from_response)
+            monkeypatch.setattr(sso, "openid_from_token", fake_openid_from_token)
             request = Request(url="https://localhost?code=code&state=unique")
+            if sso.use_id_token_for_user_info:
+                with pytest.raises(SSOLoginError, match="did not return id token"):
+                    await sso.process_login("code", request)
+            else:
+                await sso.process_login("code", request)
+
+        if sso.use_id_token_for_user_info:
+            monkeypatch.setattr("jwt.decode", lambda *_, **__: {})
+            FakeAsyncClient = make_fake_async_client(
+                returns_post=Response(
+                    url="https://localhost", json_content={"access_token": "token", "id_token": "fake.id.token"}
+                ),
+                returns_get=get_response,
+            )
+            monkeypatch.setattr("httpx.AsyncClient", FakeAsyncClient)
             await sso.process_login("code", request)
 
     async def test_context_manager_behavior(self, Provider: Type[SSOBase]):

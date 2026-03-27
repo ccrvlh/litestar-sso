@@ -1,10 +1,17 @@
 """Apple SSO Login helper."""
 
-from typing import TYPE_CHECKING, Any, ClassVar, Optional
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+from typing import Any
+from typing import ClassVar
 
 import pydantic
 
-from litestar_sso.base import DiscoveryDocument, OpenID, SSOBase
+from litestar_sso.base import OpenID
+from litestar_sso.base import SSOBase
+from litestar_sso.base import DiscoveryDocument
+
 
 if TYPE_CHECKING:
     import httpx  # pragma: no cover
@@ -46,10 +53,10 @@ class AppleSSO(SSOBase):
             "userinfo_endpoint": "https://appleid.apple.com/auth/keys",
         }
 
-    async def openid_from_token(self, id_token: dict, session: Optional["httpx.AsyncClient"] = None) -> OpenID:
+    async def openid_from_token(self, id_token: dict, session: httpx.AsyncClient | None = None) -> OpenID:
         return await self.openid_from_response(id_token, session)
 
-    async def openid_from_response(self, response: dict, session: Optional["httpx.AsyncClient"] = None) -> OpenID:
+    async def openid_from_response(self, response: dict, session: httpx.AsyncClient | None = None) -> OpenID:
         """Return OpenID from user information provided by Apple."""
         return OpenID(
             id=response.get("sub"),

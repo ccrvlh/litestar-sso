@@ -1,10 +1,15 @@
 """Google SSO Login Helper."""
 
-from typing import ClassVar, Optional
+from __future__ import annotations
+
+from typing import ClassVar
 
 import httpx
 
-from litestar_sso.base import DiscoveryDocument, OpenID, SSOBase, SSOLoginError
+from litestar_sso.base import OpenID
+from litestar_sso.base import SSOBase
+from litestar_sso.base import SSOLoginError
+from litestar_sso.base import DiscoveryDocument
 
 
 class GoogleSSO(SSOBase):
@@ -14,7 +19,7 @@ class GoogleSSO(SSOBase):
     provider = "google"
     scope: ClassVar = ["openid", "email", "profile"]
 
-    async def openid_from_response(self, response: dict, session: Optional["httpx.AsyncClient"] = None) -> OpenID:
+    async def openid_from_response(self, response: dict, session: httpx.AsyncClient | None = None) -> OpenID:
         """Return OpenID from user information provided by Google."""
         if response.get("email_verified"):
             return OpenID(
@@ -33,4 +38,4 @@ class GoogleSSO(SSOBase):
         async with httpx.AsyncClient() as session:
             response = await session.get(self.discovery_url)
             content = response.json()
-            return content
+            return content  # type: ignore[no-any-return]

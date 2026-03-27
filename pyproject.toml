@@ -38,8 +38,24 @@ addopts = [
 line-length = 120
 
 [tool.ruff]
-target-version = "py38"
+exclude = [
+    ".archive",
+    ".roo",
+    ".github",
+    "migrations",
+    "docs",
+    "infra",
+    "scripts",
+    "static",
+]
 line-length = 120
+ignore = [
+    "D100", # Missing docstring in public module
+    "D104", # Missing docstring in public package
+    "D107", # Missing docstring in __init__
+    "E712", # Avoid equality comparison to True
+]
+
 
 [tool.ruff.lint]
 select = [
@@ -65,11 +81,32 @@ ignore = [
     "B028", # allow warning without specifying `stacklevel`
 ]
 
+
+[tool.ruff.lint.isort]
+force-single-line = true
+from-first = false
+# default-section = "first-party"
+force-sort-within-sections = false
+forced-separate = ["tests", "litestar_sso"]
+known-first-party = ["litestar_sso"]
+known-third-party = ["litestar", "sqlalchemy", "faker"]
+length-sort = true
+length-sort-straight = true
+lines-after-imports = 2
+lines-between-types = 1
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "local-folder",
+    "testing",
+]
+
+
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.ruff.lint.isort]
-known-first-party = ["litestar_sso"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests*/**/*.py" = ["S101"] # Allow asserts in tests
@@ -107,14 +144,14 @@ pytest-cov = ">=4,<6"
 pytest-xdist = "^3"
 uvicorn = ">=0.23.1"
 ruff = ">=0.4.2,<0.7.0"
+types-oauthlib = "^3.3.0.20260324"
 
 [tool.poetry.dependencies]
 httpx = ">=0.23.0"
 oauthlib = ">=3.1.0"
 pydantic = { extras = ["email"], version = ">=1.8.0" }
-python = ">=3.8,<4.0"
+python = ">=3.10,<4.0"
 litestar = "^2.12.1"
-typing-extensions = { version = "^4.12.2", python = "<3.10" }
 pyjwt = ">=2.0.0"
 
 [build-system]

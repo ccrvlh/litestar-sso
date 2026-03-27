@@ -1,10 +1,16 @@
 """BitBucket SSO Oauth Helper class."""
 
-from typing import TYPE_CHECKING, ClassVar, Optional
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+from typing import ClassVar
 
 import pydantic
 
-from litestar_sso.sso.base import DiscoveryDocument, OpenID, SSOBase
+from litestar_sso.sso.base import OpenID
+from litestar_sso.sso.base import SSOBase
+from litestar_sso.sso.base import DiscoveryDocument
+
 
 if TYPE_CHECKING:
     import httpx  # pragma: no cover
@@ -33,13 +39,13 @@ class BitbucketSSO(SSOBase):
             scope=scope,
         )
 
-    async def get_useremail(self, session: Optional["httpx.AsyncClient"] = None) -> dict:
+    async def get_useremail(self, session: httpx.AsyncClient | None = None) -> dict:
         """Get user email."""
         if session is None:
             raise ValueError("Session is required to make HTTP requests")
 
         response = await session.get(f"https://api.bitbucket.org/{self.version}/user/emails")
-        return response.json()
+        return response.json()  # type: ignore[no-any-return]
 
     async def get_discovery_document(self) -> DiscoveryDocument:
         return {
@@ -48,7 +54,7 @@ class BitbucketSSO(SSOBase):
             "userinfo_endpoint": f"https://api.bitbucket.org/{self.version}/user",
         }
 
-    async def openid_from_response(self, response: dict, session: Optional["httpx.AsyncClient"] = None) -> OpenID:
+    async def openid_from_response(self, response: dict, session: httpx.AsyncClient | None = None) -> OpenID:
         email = await self.get_useremail(session=session)
         return OpenID(
             email=email["values"][0]["email"],

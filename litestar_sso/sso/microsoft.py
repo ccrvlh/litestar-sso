@@ -1,10 +1,16 @@
 """Microsoft SSO Oauth Helper class."""
 
-from typing import TYPE_CHECKING, ClassVar, List, Optional, Union
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+from typing import ClassVar
 
 import pydantic
 
-from litestar_sso.sso.base import DiscoveryDocument, OpenID, SSOBase
+from litestar_sso.sso.base import OpenID
+from litestar_sso.sso.base import SSOBase
+from litestar_sso.sso.base import DiscoveryDocument
+
 
 if TYPE_CHECKING:
     import httpx  # pragma: no cover
@@ -22,11 +28,11 @@ class MicrosoftSSO(SSOBase):
         self,
         client_id: str,
         client_secret: str,
-        redirect_uri: Optional[Union[pydantic.AnyHttpUrl, str]] = None,
+        redirect_uri: pydantic.AnyHttpUrl | str | None = None,
         allow_insecure_http: bool = False,
         use_state: bool = False,  # TODO: Remove use_state argument
-        scope: Optional[List[str]] = None,
-        tenant: Optional[str] = None,
+        scope: list[str] | None = None,
+        tenant: str | None = None,
     ):
         super().__init__(
             client_id=client_id,
@@ -45,7 +51,7 @@ class MicrosoftSSO(SSOBase):
             "userinfo_endpoint": f"https://graph.microsoft.com/{self.version}/me",
         }
 
-    async def openid_from_response(self, response: dict, session: Optional["httpx.AsyncClient"] = None) -> OpenID:
+    async def openid_from_response(self, response: dict, session: httpx.AsyncClient | None = None) -> OpenID:
         return OpenID(
             email=response.get("mail"),
             display_name=response.get("displayName"),

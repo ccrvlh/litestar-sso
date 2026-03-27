@@ -1,7 +1,7 @@
 """Helper functions to generate state param."""
 
-import base64
 import os
+import base64
 
 
 def generate_random_state(length: int = 64) -> str:

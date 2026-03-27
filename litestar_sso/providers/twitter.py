@@ -1,8 +1,14 @@
 """Twitter (X) SSO Oauth Helper class."""
 
-from typing import TYPE_CHECKING, ClassVar, Optional
+from __future__ import annotations
 
-from litestar_sso.base import DiscoveryDocument, OpenID, SSOBase
+from typing import TYPE_CHECKING
+from typing import ClassVar
+
+from litestar_sso.base import OpenID
+from litestar_sso.base import SSOBase
+from litestar_sso.base import DiscoveryDocument
+
 
 if TYPE_CHECKING:
     import httpx  # pragma: no cover
@@ -23,7 +29,7 @@ class TwitterSSO(SSOBase):
             "userinfo_endpoint": "https://api.twitter.com/2/users/me",
         }
 
-    async def openid_from_response(self, response: dict, session: Optional["httpx.AsyncClient"] = None) -> OpenID:
+    async def openid_from_response(self, response: dict, session: httpx.AsyncClient | None = None) -> OpenID:
         first_name, *last_name_parts = response["data"].get("name", "").split(" ")
         last_name = " ".join(last_name_parts) if last_name_parts else None
         return OpenID(

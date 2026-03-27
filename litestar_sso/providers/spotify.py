@@ -1,8 +1,14 @@
 """Spotify SSO Login Helper."""
 
-from typing import TYPE_CHECKING, ClassVar, Optional
+from __future__ import annotations
 
-from litestar_sso.base import DiscoveryDocument, OpenID, SSOBase
+from typing import TYPE_CHECKING
+from typing import ClassVar
+
+from litestar_sso.base import OpenID
+from litestar_sso.base import SSOBase
+from litestar_sso.base import DiscoveryDocument
+
 
 if TYPE_CHECKING:
     import httpx  # pragma: no cover
@@ -22,7 +28,7 @@ class SpotifySSO(SSOBase):
             "userinfo_endpoint": "https://api.spotify.com/v1/me",
         }
 
-    async def openid_from_response(self, response: dict, session: Optional["httpx.AsyncClient"] = None) -> OpenID:
+    async def openid_from_response(self, response: dict, session: httpx.AsyncClient | None = None) -> OpenID:
         """Return OpenID from user information provided by Spotify."""
         picture = response["images"][0]["url"] if response.get("images", []) else None
         return OpenID(

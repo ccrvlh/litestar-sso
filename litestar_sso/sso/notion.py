@@ -1,8 +1,15 @@
 """Notion SSO Oauth Helper class."""
 
-from typing import TYPE_CHECKING, ClassVar, Optional
+from __future__ import annotations
 
-from litestar_sso.sso.base import DiscoveryDocument, OpenID, SSOBase, SSOLoginError
+from typing import TYPE_CHECKING
+from typing import ClassVar
+
+from litestar_sso.sso.base import OpenID
+from litestar_sso.sso.base import SSOBase
+from litestar_sso.sso.base import SSOLoginError
+from litestar_sso.sso.base import DiscoveryDocument
+
 
 if TYPE_CHECKING:
     import httpx  # pragma: no cover
@@ -22,7 +29,7 @@ class NotionSSO(SSOBase):
             "userinfo_endpoint": "https://api.notion.com/v1/users/me",
         }
 
-    async def openid_from_response(self, response: dict, session: Optional["httpx.AsyncClient"] = None) -> OpenID:
+    async def openid_from_response(self, response: dict, session: httpx.AsyncClient | None = None) -> OpenID:
         owner = response["bot"]["owner"]
         if owner["type"] != "user":
             raise SSOLoginError(401, f"Notion login failed, owner is not a user but {response['bot']['owner']['type']}")
