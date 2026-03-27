@@ -1,14 +1,21 @@
 """This is an example usage of litestar-sso."""
 
-from typing import Any, Dict, Union
+from typing import Any
+from typing import Dict
+from typing import Union
 
 import uvicorn
+
 from httpx import AsyncClient
-from litestar import Litestar, Request, get
+from litestar import Request
+from litestar import Litestar
+from litestar import get
 from litestar.exceptions import HTTPException
 
-from litestar_sso.base import DiscoveryDocument, OpenID
+from litestar_sso.base import OpenID
+from litestar_sso.base import DiscoveryDocument
 from litestar_sso.providers.generic import create_provider
+
 
 app = Litestar()
 

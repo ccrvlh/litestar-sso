@@ -1,12 +1,19 @@
 """Example of framework-agnostic SSO implementation."""
 
-from abc import ABC, abstractmethod
+from abc import ABC
+from abc import abstractmethod
+from typing import Any
+from typing import Dict
+from typing import Union
+from typing import Optional
+from typing import Protocol
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, Protocol, TypeVar, Union
 from urllib.parse import urlencode
 
 import httpx
+
 from typing_extensions import TypeAlias
+
 
 # Type aliases for framework-agnostic types
 JSON: TypeAlias = Union[Dict[str, Any], list[Any]]
@@ -66,8 +73,11 @@ class WebFramework(ABC):
 class FastAPIAdapter(WebFramework):
     """FastAPI-specific implementation."""
 
-    from fastapi import FastAPI, Request, Response
-    from starlette.responses import JSONResponse, RedirectResponse
+    from fastapi import FastAPI
+    from fastapi import Request
+    from fastapi import Response
+    from starlette.responses import JSONResponse
+    from starlette.responses import RedirectResponse
 
     app: FastAPI
     request: Request
@@ -90,7 +100,9 @@ class FastAPIAdapter(WebFramework):
 class LitestarAdapter(WebFramework):
     """Litestar-specific implementation."""
 
-    from litestar import Litestar, Request, Response
+    from litestar import Request
+    from litestar import Litestar
+    from litestar import Response
     from litestar.response import Redirect
 
     app: Litestar
