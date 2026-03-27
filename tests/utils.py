@@ -2,10 +2,16 @@ from litestar.datastructures import URL
 
 
 class Request:
-    def __init__(self, url="http://localhost", query_params=None):
+    def __init__(self, url="http://localhost", query_params=None, method="GET", cookies=None, form_data=None):
         self.url = URL(url)
         self.query_params = query_params or {}
         self.headers = {}
+        self.method = method
+        self.cookies = cookies or {}
+        self._form_data = form_data or {}
+
+    async def form(self):
+        return self._form_data
 
 
 class Response:

@@ -1,22 +1,24 @@
-from typing import Any, Dict, Tuple, Type
+from typing import Any
 
 import pytest
 
-from litestar_sso.base import OpenID, SSOBase
-from litestar_sso.providers.facebook import FacebookSSO
+from litestar_sso.base import OpenID
+from litestar_sso.base import SSOBase
+from litestar_sso.providers.line import LineSSO
+from litestar_sso.providers.kakao import KakaoSSO
+from litestar_sso.providers.naver import NaverSSO
 from litestar_sso.providers.fitbit import FitbitSSO
 from litestar_sso.providers.github import GithubSSO
 from litestar_sso.providers.gitlab import GitlabSSO
-from litestar_sso.providers.kakao import KakaoSSO
-from litestar_sso.providers.line import LineSSO
-from litestar_sso.providers.linkedin import LinkedInSSO
-from litestar_sso.providers.microsoft import MicrosoftSSO
-from litestar_sso.providers.naver import NaverSSO
+from litestar_sso.providers.yandex import YandexSSO
 from litestar_sso.providers.spotify import SpotifySSO
 from litestar_sso.providers.twitter import TwitterSSO
-from litestar_sso.providers.yandex import YandexSSO
+from litestar_sso.providers.facebook import FacebookSSO
+from litestar_sso.providers.linkedin import LinkedInSSO
+from litestar_sso.providers.microsoft import MicrosoftSSO
 
-sso_test_cases: Tuple[Tuple[Type[SSOBase], Dict[str, Any], OpenID], ...] = (
+
+sso_test_cases: tuple[tuple[type[SSOBase], dict[str, Any], OpenID], ...] = (
     (
         TwitterSSO,
         {"data": {"id": "test", "username": "TestUser1234", "name": "Test User"}},
@@ -224,7 +226,7 @@ sso_test_cases: Tuple[Tuple[Type[SSOBase], Dict[str, Any], OpenID], ...] = (
 
 @pytest.mark.parametrize(("ProviderClass", "response", "openid"), sso_test_cases)
 async def test_provider_openid_by_response(
-    ProviderClass: Type[SSOBase], response: Dict[str, Any], openid: OpenID
+    ProviderClass: type[SSOBase], response: dict[str, Any], openid: OpenID
 ) -> None:
     sso = ProviderClass("client_id", "client_secret")
     async with sso:
