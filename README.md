@@ -5,7 +5,6 @@
 ![Tests Workflow Status](https://img.shields.io/github/actions/workflow/status/ccrvlh/litestar-sso/test.yml?label=tests)
 ![Lint Workflow Status](https://img.shields.io/github/actions/workflow/status/ccrvlh/litestar-sso/lint.yml?label=ruff)
 ![Mypy Workflow Status](https://img.shields.io/github/actions/workflow/status/ccrvlh/litestar-sso/lint.yml?label=mypy)
-![Black Workflow Status](https://img.shields.io/github/actions/workflow/status/ccrvlh/litestar-sso/lint.yml?label=black)
 ![CodeQL Workflow Status](https://img.shields.io/github/actions/workflow/status/ccrvlh/litestar-sso/codeql-analysis.yml?label=CodeQL)
 ![Project License](https://img.shields.io/github/license/ccrvlh/litestar-sso)
 
